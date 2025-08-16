@@ -1,0 +1,21 @@
+# environnement virtuel
+env/
+
+# fichier généré automatiquement par Mac OS 
+.DS_Store
+
+# fichiers logs
+*.log
+*.tmp 
+
+# caches python
+src/.mypy_cache/
+src/__pycache__/
+
+# settings de VSCode
+.vscode
+
+# Données entrées et données et générées
+data/
+
+
