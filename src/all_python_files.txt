@@ -1,0 +1,169 @@
+----------------------------------------
+File: ./config.py
+----------------------------------------
+# config.py
+import os
+
+DATA_DIRECTORY_PATH = os.path.join("..", "data")
+PLAYERS_FILE_PATH = os.path.join(DATA_DIRECTORY_PATH, "players.json")
+
+
+----------------------------------------
+File: ./models/__init__.py
+----------------------------------------
+"""Models package."""
+
+
+
+----------------------------------------
+File: ./models/player.py
+----------------------------------------
+""" Player """
+
+
+class Player:
+    def __init__(self, national_id, first_name, last_name, birth_date):
+        self.national_id = national_id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.birth_date = birth_date
+
+    def to_dict(self):
+        return self.__dict__
+
+
+
+
+
+"""
+objet players:
+
+classe qui gere la logique de la sauvegarde avec plusieurs methodes
+metgodes qui :
+gestion des players
+- recupere le fichioer txt dans un tableau d'iobjects players
+- enregistre le fichier txt a partir du tableau objects players
+
+pour les tournois
+- recuperer un joueur dans le txt et
+- modifier un joueur
+- ajouter un joueur (doit verifier au existe pas deja
+
++ faire CLI
+
+"""
+
+
+
+----------------------------------------
+File: ./models/players.py
+----------------------------------------
+""" Players """
+
+import json
+from config import PLAYERS_FILE_PATH
+from .player import Player
+
+
+class Players:
+    def __init__(self):
+        self.players = []
+        self.file_path = PLAYERS_FILE_PATH
+        self.load_players()
+
+    def load_players(self):
+        """Load all players from the JSON file into self.players."""
+        try:
+            with open(self.file_path, "r", encoding="utf-8") as f:
+                players_data = json.load(f)
+                for pdata in players_data:
+                    self.players.append(Player(**pdata))
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.players = []
+
+    def add_player(self, player: Player):
+        """Add a new player to the list and save to JSON."""
+        self.players.append(player)
+        self.save_players()
+
+    def save_players(self):
+        """Save the current list of players to the JSON file."""
+        with open(self.file_path, "w", encoding="utf-8") as f:
+            json.dump([p.to_dict() for p in self.players], f, ensure_ascii=False, indent=4)
+
+    def list_players(self):
+        """Return a list of all players."""
+        return self.players
+
+    def player_exists(self, national_id: int) -> bool:
+        """Check if a player with the given national_id exists."""
+        return any(player.national_id == national_id for player in self.players)
+
+    def update_player(self, updated_player: Player):
+        """Update a player in the list if it exists and save the changes to JSON."""
+        for player_index, player in enumerate(self.players):
+            if player.national_id == updated_player.national_id:
+                self.players[player_index] = updated_player
+                self.save_players()
+                return True
+        return False  # Player not found
+
+
+
+
+
+----------------------------------------
+File: ./main.py
+----------------------------------------
+"""Point d'entrée."""
+
+# from controllers.base import Controller
+from controllers.manage_players import AddPlayer
+
+
+
+
+----------------------------------------
+File: ./controllers/__init__.py
+----------------------------------------
+"""Controllers package."""
+
+
+
+----------------------------------------
+File: ./controllers/manage_players.py
+----------------------------------------
+from models.player import Player
+from models.players import Players
+
+# load the players_bdd from the JSON file
+players_bdd = Players()
+
+# Create a new player instance
+new_player = Player(325, 'Sebastian', 'Bach', '31/03/1865')
+print("Adding new player:", new_player.to_dict())
+
+# Add the player to the list and save to the JSON file
+players_bdd.add_player(new_player)
+print("Current list of players:", [p.to_dict() for p in players_bdd.players])
+
+
+
+----------------------------------------
+File: ./controllers/init_app.py
+----------------------------------------
+import os
+from config import DATA_DIRECTORY_PATH
+
+# create the date directory if not exist
+os.makedirs(DATA_DIRECTORY_PATH, exist_ok=True)
+
+
+
+----------------------------------------
+File: ./views/__init__.py
+----------------------------------------
+"""Views package"""
+
+
+

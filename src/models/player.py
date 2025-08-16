@@ -1,5 +1,4 @@
-import json
-import os
+""" Player """
 
 
 class Player:
@@ -12,10 +11,7 @@ class Player:
     def to_dict(self):
         return self.__dict__
 
-    def add_player_in_json(self):
-        player_json = json.dumps(self.to_dict())
-        json_path = os.path.join("data", "players.json")
-        print("json path ", json_path)
+
 
 
 
