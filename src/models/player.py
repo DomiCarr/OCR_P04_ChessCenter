@@ -11,24 +11,3 @@ class Player:
     def to_dict(self):
         return self.__dict__
 
-
-
-
-
-"""
-objet players:
-
-classe qui gere la logique de la sauvegarde avec plusieurs methodes
-metgodes qui :
-gestion des players
-- recupere le fichioer txt dans un tableau d'iobjects players
-- enregistre le fichier txt a partir du tableau objects players
-
-pour les tournois
-- recuperer un joueur dans le txt et
-- modifier un joueur
-- ajouter un joueur (doit verifier au existe pas deja
-
-+ faire CLI
-
-"""
