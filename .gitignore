@@ -1,12 +1,12 @@
 # environnement virtuel
 env/
 
-# fichier généré automatiquement par Mac OS 
+# fichier généré automatiquement par Mac OS
 .DS_Store
 
 # fichiers logs
 *.log
-*.tmp 
+*.tmp
 
 # caches python
 src/.mypy_cache/
@@ -18,4 +18,6 @@ src/__pycache__/
 # Données entrées et données et générées
 data/
 
+# Documents divers ou programmes tests à ignore
+docs/
 

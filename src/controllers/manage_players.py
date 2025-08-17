@@ -1,13 +1,26 @@
+
+import click
 from models.player import Player
 from models.players import Players
 
-# load the players_bdd from the JSON file
-players_bdd = Players()
+@click.group()
+def mycommands():
+    """CLI for managing players."""
+    pass
 
-# Create a new player instance
-new_player = Player(325, 'Sebastian', 'Bach', '31/03/1865')
-print("Adding new player:", new_player.to_dict())
 
-# Add the player to the list and save to the JSON file
-players_bdd.add_player(new_player)
-print("Current list of players:", [p.to_dict() for p in players_bdd.players])
+@mycommands.command()
+@click.option("--id", prompt="National ID", type=int)
+@click.option("--first", prompt="First name")
+@click.option("--last", prompt="Last name")
+@click.option("--birth", prompt="Birth date")
+def add_player(id, first, last, birth):
+    """Add a new player via CLI."""
+    players_bdd = Players()
+    new_player = Player(id, first, last, birth)
+
+    if players_bdd.player_exists(id):
+        click.echo("Player already exists.")
+    else:
+        players_bdd.add_player(new_player)
+        click.echo("Player added successfully!")
