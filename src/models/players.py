@@ -35,7 +35,7 @@ class Players:
         """Return a list of all players."""
         return self.players
 
-    def player_exists(self, national_id: int) -> bool:
+    def player_exists(self, national_id) -> bool:
         """Check if a player with the given national_id exists."""
         return any(player.national_id == national_id for player in self.players)
 

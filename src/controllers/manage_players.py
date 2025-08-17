@@ -11,7 +11,7 @@ def mycommands():
 
 
 @click.command()
-@click.option("--id", prompt="National ID", type=int)
+@click.option("--id", prompt="National ID")
 @click.option("--first", prompt="First name")
 @click.option("--last", prompt="Last name")
 @click.option("--birth", prompt="Birth date")
@@ -41,4 +41,3 @@ def list_players():
 
 mycommands.add_command(add_player)
 mycommands.add_command(list_players)
-
