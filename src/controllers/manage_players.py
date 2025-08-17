@@ -1,3 +1,4 @@
+"""manage_players"""
 
 import click
 from models.player import Player
@@ -9,7 +10,7 @@ def mycommands():
     pass
 
 
-@mycommands.command()
+@click.command()
 @click.option("--id", prompt="National ID", type=int)
 @click.option("--first", prompt="First name")
 @click.option("--last", prompt="Last name")
@@ -24,3 +25,20 @@ def add_player(id, first, last, birth):
     else:
         players_bdd.add_player(new_player)
         click.echo("Player added successfully!")
+
+
+@click.command()
+def list_players():
+    """List all players."""
+    players_bdd = Players()
+    all_players = players_bdd.list_players()
+    if not all_players:
+        click.echo("No players found.")
+    else:
+        for player in all_players:
+            click.echo(f"{player.national_id} - {player.first_name} {player.last_name}, {player.birth_date}")
+
+
+mycommands.add_command(add_player)
+mycommands.add_command(list_players)
+

@@ -1,4 +1,5 @@
-# config.py
+"""config.py"""
+
 import os
 
 DATA_DIRECTORY_PATH = os.path.join("..", "data")
