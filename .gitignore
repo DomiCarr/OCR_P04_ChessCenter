@@ -1,23 +1,21 @@
-# environnement virtuel
+# Virtual environment
 env/
 
-# fichier généré automatiquement par Mac OS
+# macOS system files
 .DS_Store
 
-# fichiers logs
+# Logs & temp files
 *.log
 *.tmp
 
-# caches python
-src/.mypy_cache/
-src/__pycache__/
+# Python cache
+**/__pycache__/
+**/.mypy_cache/
+*.py[cod]
 
-# settings de VSCode
-.vscode
+# VSCode settings
+.vscode/
 
-# Données entrées et données et générées
+# Data & generated docs
 data/
-
-# Documents divers ou programmes tests à ignore
 docs/
-
