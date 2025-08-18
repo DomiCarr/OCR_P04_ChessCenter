@@ -13,11 +13,11 @@
         affecter aléatoirement blanc ou noir a chaque joueur
 - tant que le round n'est pas terminé (il reste des matchs avec 2 scores a zero)
     saisir le résultats d'un match à partir de la liste des matchs
-        modifier le score total des journeurs pour le tournoi
+    modifier le score total des journeurs pour le tournoi
 - incrémenter ne numero du round : ongoing_round =+1
 - tant qu'il reste des rounds à jouer (ongoing_round <= nb_of_rounds)
     Trier les joueurs par ordre de point
-    Associer les joueurs par paire dans l'ordre
+    Associer les joueurs par paire dans l'ordre en évitant les matchs deja joués
     mettre un score a zéro a chaque joueur
     affecter aléatoirement blanc ou noir a chaque joueur
 - tant que le round n'est pas terminé (il reste des matchs avec 2 scores a zero)
