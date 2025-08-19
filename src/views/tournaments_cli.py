@@ -6,13 +6,13 @@ from models.tournament import Tournament
 @click.command()
 @click.option("--name", prompt="name")
 @click.option("--location", prompt="location")
-@click.option("--last", prompt="Last name")
-def add_tournament(id, first, last, birth):
+@click.option("--description", prompt="description")
+def add_tournament(name, location, description):
     """Add a new player via CLI."""
     players_bdd = Players()
     new_player = Player(id, first, last, birth)
 
-    if players_bdd.player_exists(id):
+    if tournament_bdd.player_exists(id):
         click.echo("Player already exists.")
     else:
         players_bdd.add_player(new_player)

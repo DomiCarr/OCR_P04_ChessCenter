@@ -31,15 +31,16 @@
 
 import click
 
-from views.players_cli import add_player
+# initialize the tournament
+from views.tournaments_cli import add_tournament
 
 
 @click.group()
 def mycommands():
-    """CLI for managing players."""
+    """CLI for managing a tournament."""
     pass
 
 
 # Attach commands from views
-mycommands.add_command(add_player)
+mycommands.add_command(add_tournament)
 mycommands.add_command(list_players)
