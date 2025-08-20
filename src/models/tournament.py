@@ -1,15 +1,15 @@
 class Tournament:
 
     def __init__(self,
-                 name,
-                 location,
-                 start_date,
-                 end_date,
-                 ongoing_round_number,
-                 rounds_list,
-                 players_list,
-                 description,
-                 nb_of_rounds=4):
+                 name: str,
+                 location: str,
+                 description: str,
+                 start_date: str = None,
+                 end_date: str = None,
+                 ongoing_round_number: int = 0,
+                 rounds_list: list = None,
+                 players_list: list = None,
+                 nb_of_rounds: int = 4):
 
         self.name = name
         self.location = location

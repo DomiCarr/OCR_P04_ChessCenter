@@ -2,31 +2,20 @@
 
 import click
 from models.tournament import Tournament
+from models.tournaments import Tournaments
 
 @click.command()
 @click.option("--name", prompt="name")
 @click.option("--location", prompt="location")
 @click.option("--description", prompt="description")
+
 def add_tournament(name, location, description):
     """Add a new player via CLI."""
-    players_bdd = Players()
-    new_player = Player(id, first, last, birth)
+    tournament_bdd = Tournaments()
+    new_tournament = Tournament(name, location, description)
 
-    if tournament_bdd.player_exists(id):
-        click.echo("Player already exists.")
+    if tournament_bdd.tournament_exists(id):
+        click.echo("Tournament already exists.")
     else:
-        players_bdd.add_player(new_player)
-        click.echo("Player added successfully!")
-
-@click.command()
-def list_tournaments():
-    """List all players sorted by last name then first name."""
-    players_bdd = Players()
-    all_players = players_bdd.list_players()
-    if not all_players:
-        click.echo("No players found.")
-    else:
-        # Tri par nom puis prénom
-        sorted_players = sorted(all_players, key=lambda p: (p.last_name.lower(), p.first_name.lower()))
-        for player in sorted_players:
-            click.echo(f"{player.national_id} - {player.first_name} {player.last_name}, {player.birth_date}")
+        tournament_bdd.add_tournament(new_tournament)
+        click.echo("Tournament added successfully!")

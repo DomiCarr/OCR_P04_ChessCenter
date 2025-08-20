@@ -1,6 +1,6 @@
 """Application entry point."""
 from controllers.init_app import init_app
-from controllers.manage_players import mycommands
+#from controllers.manage_players import mycommands
 from controllers.manage_tournament import mycommands
 
 if __name__ == "__main__":
