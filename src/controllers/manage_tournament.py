@@ -43,4 +43,21 @@ def mycommands():
 
 # Attach commands from views
 mycommands.add_command(add_tournament)
-mycommands.add_command(list_players)
+"""
+mycommands.add_command(register_player)
+
+mycommands.add_command(start_tournament)
+
+mycommands.add_command(add_round)
+
+mycommands.add_command(xxxx_tournament)
+mycommands.add_command(xxxx_tournament)
+mycommands.add_command(xxxx_tournament)
+mycommands.add_command(xxxx_tournament)
+mycommands.add_command(xxxx_tournament)
+
+mycommands.add_command(end_tournament)
+
+"""
+
+
