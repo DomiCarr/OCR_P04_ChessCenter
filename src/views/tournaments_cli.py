@@ -14,7 +14,7 @@ def add_tournament(name, location, description):
     tournament_bdd = Tournaments()
     new_tournament = Tournament(name, location, description)
 
-    if tournament_bdd.tournament_exists(id):
+    if tournament_bdd.tournament_exists(name):
         click.echo("Tournament already exists.")
     else:
         tournament_bdd.add_tournament(new_tournament)
