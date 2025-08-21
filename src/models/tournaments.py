@@ -26,16 +26,17 @@ class Tournaments:
         self.tournaments.append(tournament)
         self.save_tournaments()
 
-#    def save_tournaments(self):
-#        """Save the current list of tournaments to the JSON file."""
-#        with open(self.file_path, "w", encoding="utf-8") as f:
-#            json.dump([p for p in self.tournaments], f, ensure_ascii=False, indent=4)
-
     def save_tournaments(self):
-        """Sauvegarde la liste des tournois dans un fichier texte brut."""
+        """Save the current list of tournaments to the JSON file."""
         with open(self.file_path, "w", encoding="utf-8") as f:
-            for tournament in self.tournaments:
-                f.write(str(tournament) + "\n")
+            json.dump([t.to_dict() for t in self.tournaments], f, ensure_ascii=False, indent=4)
+
+
+#    def save_tournaments(self):
+#        """Sauvegarde la liste des tournois dans un fichier texte brut."""
+#        with open(self.file_path, "w", encoding="utf-8") as f:
+#            for tournament in self.tournaments:
+#                f.write(str(tournament.to_dict()) + "\n")
 
     def tournament_exists(self, name) -> bool:
         """Check if a tournament with the given national_id exists."""
