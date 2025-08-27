@@ -31,23 +31,35 @@ class Tournaments:
         with open(self.file_path, "w", encoding="utf-8") as f:
             json.dump([t.to_dict() for t in self.tournaments], f, ensure_ascii=False, indent=4)
 
-
-#    def save_tournaments(self):
-#        """Sauvegarde la liste des tournois dans un fichier texte brut."""
-#        with open(self.file_path, "w", encoding="utf-8") as f:
-#            for tournament in self.tournaments:
-#                f.write(str(tournament.to_dict()) + "\n")
-
     def tournament_exists(self, name) -> bool:
         """Check if a tournament with the given national_id exists."""
         return any(tournament.name == name for tournament in self.tournaments)
 
+    def get_tournament_by_name(self, name: str) -> Tournament | None:
+        """Return a Tournament by is name, or None if not found."""
+        for tournament in self.tournaments:
+            if tournament.name == name:
+                return tournament
+        return None
+
+    def update_tournament(self, updated_tournament: Tournament) -> bool:
+        """Update a tournament in the list if it exists and save the changes to JSON."""
+        for idx, tournament in enumerate(self.tournaments):
+            if tournament.name == updated_tournament.name:
+                self.tournaments[idx] = updated_tournament
+                self.save_tournaments()
+                return True
+        return False  # Tournament not found
+
+
+
 """
+    def register_players()
+        pass
+
     def list_tournaments(self):
-        #Return a list of all players.
+        #Return a list of all tournaments.
         return self.tournaments
-
-
 
     def update_tournament(self, updated_tournament: Tournament):
         #Update a tournament in the list if it exists and save the changes to JSON.

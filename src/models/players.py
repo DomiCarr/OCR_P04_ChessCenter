@@ -29,7 +29,11 @@ class Players:
     def save_players(self):
         """Save the current list of players to the JSON file."""
         with open(self.file_path, "w", encoding="utf-8") as f:
-            json.dump([p.to_dict() for p in self.players], f, ensure_ascii=False, indent=4)
+            json.dump(
+                [p.to_dict() for p in self.players],
+                f,
+                ensure_ascii=False, indent=4
+            )
 
     def list_players(self):
         """Return a list of all players."""
@@ -48,4 +52,9 @@ class Players:
                 return True
         return False  # Player not found
 
-
+    def get_player_by_id(self, national_id: str) -> Player | None:
+        """Return a Player object by national_id, or None if not found."""
+        for player in self.players:
+            if player.national_id == national_id:
+                return player
+        return None

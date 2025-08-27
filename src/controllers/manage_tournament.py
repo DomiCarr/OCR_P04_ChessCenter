@@ -25,6 +25,14 @@
     modifier le score total des journeurs pour le tournoi
 - lorsque le tournoi est fini renseigner la datetime de fin
 - lister les joueurs par ordre de points le gagnant en premier
+
+
+1: faire les modeles
+2: ajouter la logique: controller menu principal
+3: Affichage du menu dans un 1er temps
+4: ajouter les menus dans l'ordre
+5:
+
 """
 
 """manage_players - Controller for player CLI"""
