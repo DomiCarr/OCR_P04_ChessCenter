@@ -1,3 +1,24 @@
+"""manage_players - Controller for player CLI"""
+
+import click
+
+# initialize the tournament
+from views.tournaments_cli import add_tournament
+from views.tournaments_cli import register_player
+from views.tournaments_cli import list_tournaments
+
+
+@click.group()
+def mycommands():
+    """CLI for managing a tournament."""
+    pass
+
+
+# Attach commands from views
+mycommands.add_command(add_tournament)
+mycommands.add_command(register_player)
+mycommands.add_command(list_tournaments)
+
 """
 - créer le tournoi: name, location, description
 -tant que le tournoi n'as pas commencé (star_date a blanc)
@@ -34,26 +55,7 @@
 5:
 
 """
-
-"""manage_players - Controller for player CLI"""
-
-import click
-
-# initialize the tournament
-from views.tournaments_cli import add_tournament
-
-
-@click.group()
-def mycommands():
-    """CLI for managing a tournament."""
-    pass
-
-
-# Attach commands from views
-mycommands.add_command(add_tournament)
 """
-mycommands.add_command(register_player)
-
 mycommands.add_command(start_tournament)
 
 mycommands.add_command(add_round)

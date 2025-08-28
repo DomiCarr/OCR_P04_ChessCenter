@@ -55,3 +55,15 @@ def register_player(tournament_name, player_id):
     tournament.players_list.append(player)
     tournaments_bdd.update_tournament(tournament)
     click.echo(f"Player '{player.first_name} {player.last_name}' registered successfully in tournament '{tournament_name}'.")
+
+@click.command()
+def list_tournaments():
+    """List all tournaments sorted by name."""
+    tournaments_bdd = Tournaments()
+    all_tournaments = tournaments_bdd.list_tournaments()
+    if not all_tournaments:
+        click.echo("No tournament found.")
+    else:
+        sorted_tournaments = sorted(all_tournaments, key=lambda t: t.name.lower())
+        for tournament in sorted_tournaments:
+            click.echo(f"{tournament.name}")

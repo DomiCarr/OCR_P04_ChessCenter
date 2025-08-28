@@ -3,6 +3,8 @@
 import json
 from config import TOURNAMENTS_FILE_PATH
 from .tournament import Tournament
+from .player import Player
+from .round import Round
 
 
 class Tournaments:
@@ -12,11 +14,25 @@ class Tournaments:
         self.load_tournaments()
 
     def load_tournaments(self):
-        """Load all tournaments from the JSON file into self.tournaments."""
         try:
             with open(self.file_path, "r", encoding="utf-8") as f:
                 tournaments_data = json.load(f)
                 for pdata in tournaments_data:
+                    # rebuild players
+                    if pdata.get("players_list"):
+                        pdata["players_list"] = [Player(**p) for p in pdata["players_list"]]
+                    # rebuild rounds + matches
+                    if pdata.get("rounds_list"):
+                        for rdata in pdata["rounds_list"]:
+                            if rdata.get("matches_list"):
+                                for mdata in rdata["matches_list"]:
+                                    mdata["match"] = [
+                                        [Player(**mdata["match"][0][0]), mdata["match"][0][1]],
+                                        [Player(**mdata["match"][1][0]), mdata["match"][1][1]],
+                                    ]
+                            rdata["matches_list"] = [Round(**rdata)]
+                        pdata["rounds_list"] = [Round(**r) for r in pdata["rounds_list"]]
+
                     self.tournaments.append(Tournament(**pdata))
         except (FileNotFoundError, json.JSONDecodeError):
             self.tournaments = []
@@ -51,23 +67,12 @@ class Tournaments:
                 return True
         return False  # Tournament not found
 
-
-
-"""
-    def register_players()
-        pass
-
     def list_tournaments(self):
-        #Return a list of all tournaments.
+        """Return a list of all tournaments."""
         return self.tournaments
 
-    def update_tournament(self, updated_tournament: Tournament):
-        #Update a tournament in the list if it exists and save the changes to JSON.
-        for tournament_index, tournament in enumerate(self.tournaments):
-            if tournament.name == updated_tournament.name:
-                self.tournaments[tournament_index] = updated_tournament
-                self.save_tournaments()
-                return True
-        return False  # Tournament not found
-"""
+    """
+
+
+    """
 
