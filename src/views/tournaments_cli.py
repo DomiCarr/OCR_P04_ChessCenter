@@ -81,4 +81,5 @@ def start_tournaments(tournament_name):
         return
 
     # Update start_date and ongoing round = 1
-    tournament.start_tournament()
+    # tournament.start_tournament()
+    click.echo(f"Tournament '{tournament_name}' started")
