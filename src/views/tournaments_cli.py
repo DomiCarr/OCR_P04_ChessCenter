@@ -67,3 +67,18 @@ def list_tournaments():
         sorted_tournaments = sorted(all_tournaments, key=lambda t: t.name.lower())
         for tournament in sorted_tournaments:
             click.echo(f"{tournament.name}")
+
+@click.command()
+@click.option("--tournament_name", prompt="Tournament_name")
+def start_tournaments(tournament_name):
+    """Start a tournament"""
+    tournaments_bdd = Tournaments()
+
+    # Check if the tournament exists
+    tournament = tournaments_bdd.get_tournament_by_name(tournament_name)
+    if tournament is None:
+        click.echo(f"Tournament '{tournament_name}' not found.")
+        return
+
+    # Update start_date and ongoing round = 1
+    tournament.start_tournament()

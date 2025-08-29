@@ -27,9 +27,13 @@ class Tournaments:
                             if rdata.get("matches_list"):
                                 for mdata in rdata["matches_list"]:
                                     mdata["match"] = [
-                                        [Player(**mdata["match"][0][0]), mdata["match"][0][1]],
-                                        [Player(**mdata["match"][1][0]), mdata["match"][1][1]],
-                                    ]
+                                        [Player(**mdata["match"][0][0]),
+                                         mdata["match"][0][1],
+                                         mdata["match"][0][2]],
+                                        [Player(**mdata["match"][1][0]),
+                                         mdata["match"][1][1],
+                                         mdata["match"][1][2]],
+                                        ]
                             rdata["matches_list"] = [Round(**rdata)]
                         pdata["rounds_list"] = [Round(**r) for r in pdata["rounds_list"]]
 

@@ -6,7 +6,7 @@ import click
 from views.tournaments_cli import add_tournament
 from views.tournaments_cli import register_player
 from views.tournaments_cli import list_tournaments
-
+from views.tournaments_cli import start_tournament
 
 @click.group()
 def mycommands():
@@ -18,6 +18,7 @@ def mycommands():
 mycommands.add_command(add_tournament)
 mycommands.add_command(register_player)
 mycommands.add_command(list_tournaments)
+mycommands.add_command(start_tournament)
 
 """
 - créer le tournoi: name, location, description
