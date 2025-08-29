@@ -70,7 +70,7 @@ def list_tournaments():
 
 @click.command()
 @click.option("--tournament_name", prompt="Tournament_name")
-def start_tournaments(tournament_name):
+def start_tournament(tournament_name):
     """Start a tournament"""
     tournaments_bdd = Tournaments()
 
@@ -81,5 +81,6 @@ def start_tournaments(tournament_name):
         return
 
     # Update start_date and ongoing round = 1
-    # tournament.start_tournament()
+    tournament.start_tournament()
+    tournaments_bdd.update_tournament(tournament)
     click.echo(f"Tournament '{tournament_name}' started")

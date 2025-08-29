@@ -18,7 +18,7 @@ class Round:
 
         return {
             "name": self.name,
-            "start_datetime": self.start_datetime,
-            "end_datetime": self.end_datetime,
+            "start_datetime": self.start_datetime.isoformat() if self.start_datetime else None,
+            "end_datetime": self.end_datetime.isoformat() if self.end_datetime else None,
             "matches_list": matches_list_dict
         }

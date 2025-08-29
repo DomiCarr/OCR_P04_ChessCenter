@@ -1,11 +1,11 @@
 import random
 from typing import List
-
 from datetime import datetime
-from round import Round
-from player import Player
-from match import Match
-from tournament_player import TournamentPlayer
+
+from models.tournament_round import Round
+from models.player import Player
+from models.match import Match
+from models.tournament_player import TournamentPlayer
 
 
 class Tournament:
@@ -47,8 +47,8 @@ class Tournament:
             "name": self.name,
             "location": self.location,
             "description": self.description,
-            "start_date": self.start_date,
-            "end_date": self.end_date,
+            "start_date": self.start_date.isoformat() if self.start_date else None,
+            "end_date": self.end_date.isoformat() if self.end_date else None,
             "ongoing_round_number": self.ongoing_round_number,
             "nb_of_rounds": self.nb_of_rounds,
             "rounds_list": rounds_list_dict,

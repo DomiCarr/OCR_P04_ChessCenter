@@ -1,10 +1,17 @@
 """ Tournaments """
 
+# Standard library
 import json
+from datetime import datetime
+
+# Project modules
 from config import TOURNAMENTS_FILE_PATH
-from .tournament import Tournament
-from .player import Player
-from .round import Round
+from models.tournament import Tournament
+from models.tournament_round import Round
+from models.player import Player
+from models.tournament_player import TournamentPlayer
+from models.match import Match
+
 
 
 class Tournaments:
@@ -18,26 +25,53 @@ class Tournaments:
             with open(self.file_path, "r", encoding="utf-8") as f:
                 tournaments_data = json.load(f)
                 for pdata in tournaments_data:
-                    # rebuild players
+
+                    # rebuild players_list
                     if pdata.get("players_list"):
                         pdata["players_list"] = [Player(**p) for p in pdata["players_list"]]
-                    # rebuild rounds + matches
-                    if pdata.get("rounds_list"):
-                        for rdata in pdata["rounds_list"]:
-                            if rdata.get("matches_list"):
-                                for mdata in rdata["matches_list"]:
-                                    mdata["match"] = [
-                                        [Player(**mdata["match"][0][0]),
-                                         mdata["match"][0][1],
-                                         mdata["match"][0][2]],
-                                        [Player(**mdata["match"][1][0]),
-                                         mdata["match"][1][1],
-                                         mdata["match"][1][2]],
-                                        ]
-                            rdata["matches_list"] = [Round(**rdata)]
-                        pdata["rounds_list"] = [Round(**r) for r in pdata["rounds_list"]]
 
-                    self.tournaments.append(Tournament(**pdata))
+                    # Convert dates from ISO strings to datetime
+                    if pdata.get("start_date"):
+                        from datetime import datetime
+                        pdata["start_date"] = datetime.fromisoformat(pdata["start_date"])
+                    if pdata.get("end_date"):
+                        pdata["end_date"] = datetime.fromisoformat(pdata["end_date"])
+
+                # --- Rebuild rounds_list ---
+                rounds_list = []
+                if pdata.get("rounds_list"):
+                    for rdata in pdata["rounds_list"]:
+
+                        # Convert round datetime fields
+                        if rdata.get("start_datetime"):
+                            rdata["start_datetime"] = datetime.fromisoformat(rdata["start_datetime"])
+                        if rdata.get("end_datetime"):
+                            rdata["end_datetime"] = datetime.fromisoformat(rdata["end_datetime"])
+
+                        # Rebuild matches_list inside the round
+                        matches_list = []
+                        if rdata.get("matches_list"):
+                            for mdata in rdata["matches_list"]:
+                                # Each match stores players + color + score
+                                p1 = TournamentPlayer.from_dict(mdata["match"][0][0])
+                                p2 = TournamentPlayer.from_dict(mdata["match"][1][0])
+
+                                match = Match(
+                                    player_1=p1.player, color_1=mdata["match"][0][1], score_1=mdata["match"][0][2],
+                                    player_2=p2.player, color_2=mdata["match"][1][1], score_2=mdata["match"][1][2],
+                                )
+                                matches_list.append(match)
+
+                        # Inject rebuilt matches into the round
+                        rdata["matches_list"] = matches_list
+                        rounds_list.append(Round(**rdata))
+
+                # Replace rounds_list with the rebuilt one
+                pdata["rounds_list"] = rounds_list
+
+                # --- Build the Tournament object ---
+                self.tournaments.append(Tournament(**pdata))
+
         except (FileNotFoundError, json.JSONDecodeError):
             self.tournaments = []
 
