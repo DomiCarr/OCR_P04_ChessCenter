@@ -102,16 +102,19 @@ class Tournament:
         players_sorted = self.sort_players(round_number)
 
         # Round name =. Tournament Name + "Round" + round_number
-        round_name = f"{self.name} - Round {round_number}"
+        round_name = f"{self.name}-{round_number}"
 
         # start the round for this tournament
-        round = TournamentRound(name=round_name,
-                                start_date=datetime.now(),
-                                matches_list=[]
+        tournament_round = TournamentRound(name=round_name,
+                                           start_date=datetime.now(),
+                                           matches_list=[]
                 )
 
         # create the matches for this round
-        self.create_matches(round, players_sorted)
+        self.create_matches(tournament_round, players_sorted)
+
+        # Register the round in the tournament
+        self.rounds_list.append(tournament_round)
 
     def sort_players(self, round_number: int) -> List["Player"]:
         """Sort the players :shuffle for round 1, sort by score for others"""
@@ -121,10 +124,11 @@ class Tournament:
         if round_number == 1:
             random.shuffle(self.players_list)
         else:
-            self.players_list.sort(key=lambda p: p.score, reverse=True)
+            random.shuffle(self.players_list)
         return self.players_list
 
-    def create_matches(self, round: "Round", players_sorted: list["Player"]) -> None:
+    def create_matches(self, tournament_round: "TournamentRound",
+                       players_sorted: list["Player"]) -> None:
         for i in range(0, len(players_sorted) - 1, 2):
             p1 = players_sorted[i]
             p2 = players_sorted[i+1]
@@ -143,5 +147,4 @@ class Tournament:
                           )
 
             # Add the match to the rounds matches list
-            round.matches_list.append(match)
-
+            tournament_round.matches_list.append(match)
