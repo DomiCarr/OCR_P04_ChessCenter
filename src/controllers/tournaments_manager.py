@@ -85,3 +85,19 @@ class TournamentsManager:
         current_tournament.start_tournament()
         self.tournaments.add_tournament(current_tournament)
         self.view.display_message(f"Tournament '{name}' started.")
+
+    def start_round(self):
+        """Start a new round for a tournament"""
+        name = self.view.ask_tournament_name()
+        current_tournament = self.tournaments.get_tournament_by_name(name)
+
+        if not current_tournament:
+            self.view.display_message(f"Tournament '{name}' not found.")
+            return  # tournament not found
+
+        # Start the round (round number managed internally by the tournament)
+        current_tournament.start_round(current_tournament.ongoing_round_number)
+        self.tournaments.update_tournament(current_tournament)
+        self.view.display_message(
+            f"Round {current_tournament.ongoing_round_number} of '{name}' started."
+        )

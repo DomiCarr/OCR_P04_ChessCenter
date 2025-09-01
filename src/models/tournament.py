@@ -106,7 +106,8 @@ class Tournament:
 
         # start the round for this tournament
         tournament_round = TournamentRound(name=round_name,
-                                           start_date=datetime.now(),
+                                           start_datetime=datetime.now(),
+                                           end_datetime=None,  # will be set when the round is closed
                                            matches_list=[]
                 )
 
