@@ -12,6 +12,16 @@ class TournamentsManager:
         self.players = Players()
         self.view = TournamentsView()
 
+    def display_tournament(self):
+        name = self.view.ask_tournament_name()
+        current_tournament = self.tournaments.get_tournament_by_name(name)
+
+        if not current_tournament:
+            self.view.display_message(f"Tournament '{name}' not found.")
+            return
+
+        self.view.display_tournament_details(current_tournament)
+
     def add_tournament(self):
         tournament_details = self.view.ask_new_tournament_details()
         name = tournament_details["name"]

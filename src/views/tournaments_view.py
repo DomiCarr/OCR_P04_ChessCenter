@@ -1,5 +1,8 @@
 # views/tournaments_view.py
 from views.base_view import BaseView
+from models.tournament import Tournament
+from models.player import Player
+from typing import List
 
 
 class TournamentsView(BaseView):
@@ -23,7 +26,24 @@ class TournamentsView(BaseView):
         nids = input("Enter players national ids separated by comma: ").strip()
         return [i.strip() for i in nids.split(",") if i.strip()]
 
-    def display_tournaments(self, tournaments: list):
+    def display_tournaments(self, tournaments: List[Tournament]):
         print("\n=== Tournaments List ===")
         for t in tournaments:
-            print(f"- {t.name} at {t.location}, {t.description}, {len(t.players_list)} players")
+            print(
+                f"- {t.name} at {t.location}, "
+                f"{t.description}, {len(t.players_list)} players"
+            )
+
+    def display_tournament_details(self, tournament: "Tournament"):
+        """Display the tournament details"""
+        print("\ ------ Tournament Details ------ ")
+        print(f"Name:  {tournament.name}")
+        print(f"Location:  {tournament.location}")
+        print(f"Description:  {tournament.description}")
+        print(f"Start date:  {tournament.start_date}")
+        print(f"Ongoing round:  {tournament.ongoing_round_number}")
+        print("\ ------ Registered Players ------ ")
+        players: list[Player] = tournament.players_list
+        for player in players:
+            print(f" - {player.national_id} {player.first_name} {player.last_name}")
+

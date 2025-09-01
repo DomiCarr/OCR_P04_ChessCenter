@@ -26,6 +26,7 @@ class PlayersManager:
             last_name=data["last_name"],
             birth_date=data["birth_date"]
         )
+        self.players_model.load_players()
         self.players_model.add_player(new_player)
         self.players_view.display_message("Player added successfully.")
 
@@ -33,6 +34,6 @@ class PlayersManager:
         """List all players and display them via the view."""
         players = self.players_model.list_players()
         if not players:
-            self.players_view.show_message("No players found.")
+            self.players_view.display_message("No players found.")
         else:
-            self.players_view.show_players(players)
+            self.players_view.display_players(players)

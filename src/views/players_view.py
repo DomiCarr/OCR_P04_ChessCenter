@@ -1,6 +1,7 @@
 """views/players_view.py"""
 from views.base_view import BaseView
 from models.player import Player
+from datetime import datetime
 
 
 class PlayersView(BaseView):
@@ -10,7 +11,18 @@ class PlayersView(BaseView):
         national_id = input("National ID: ").strip()
         first_name = input("First name: ").strip()
         last_name = input("Last name: ").strip()
-        birth_date = input("Birth date (DD/MM/YYYY): ").strip()
+
+        # birth date
+        while True:
+            birth_date_str = input("Birth date (DD/MM/YYYY): ").strip()
+            try:
+                birth_date = datetime.strptime(birth_date_str, "%d/%m/%Y").date()
+                break  # Invalid date format
+            except ValueError:
+                print("Invalid date format. Please use DD/MM/YYYY.")
+
+        #convert to date
+        birth_date = datetime.strptime(birth_date_str, "%d/%m/%Y").date()
         return {
             "national_id": national_id,
             "first_name": first_name,
