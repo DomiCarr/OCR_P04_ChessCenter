@@ -36,13 +36,13 @@ class MainMenu:
         elif choice == "5":
             self.tournaments_manager.add_tournament()
         elif choice == "6":
-            self.tournaments_manager.register_players()
-#        elif choice == "7":
-#            self.tournaments_controller.start_tournament()
+            self.tournaments_manager.register_tournament_players()
+        elif choice == "7":
+            self.tournaments_manager.start_tournament()
 #        elif choice == "8":
-#            self.rounds_controller.start_round()
+#            self.rounds_manager.start_round()
 #        elif choice == "9":
-#            self.rounds_controller.enter_results()
+#            self.rounds_manager.enter_results()
 
         elif choice == "0":
             print("Exiting...")

@@ -2,7 +2,6 @@ from models.player import Player
 
 
 class Match:
-
     def __init__(self,
                  player_1,
                  color_1,

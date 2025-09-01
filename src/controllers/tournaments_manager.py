@@ -69,5 +69,19 @@ class TournamentsManager:
             return
         self.view.display_tournaments(tournaments_list)
 
+    def start_tournament(self):
+        name = self.view.ask_tournament_name()
+        current_tournament = self.tournaments.get_tournament_by_name(name)
 
+        if not current_tournament:
+            self.view.display_message(f"Tournament '{name}' not found.")
+            return  # tournament not found
 
+        if current_tournament.start_date:
+            self.view.display_message(f"Tournament '{name}' has already started.")
+            return  # Tournament already started
+
+        # update the current tournament
+        current_tournament.start_tournament()
+        self.tournaments.add_tournament(current_tournament)
+        self.view.display_message(f"Tournament '{name}' started.")
