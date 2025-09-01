@@ -2,7 +2,7 @@ import random
 from typing import List
 from datetime import datetime
 
-from models.tournament_round import Round
+from models.tournament_round import TournamentRound
 from models.player import Player
 from models.match import Match
 from models.tournament_player import TournamentPlayer

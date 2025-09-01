@@ -9,7 +9,6 @@ from config import TOURNAMENTS_FILE_PATH
 from models.tournament import Tournament
 from models.tournament_round import Round
 from models.player import Player
-from models.tournament_player import TournamentPlayer
 from models.match import Match
 
 
@@ -25,7 +24,7 @@ class Tournaments:
             with open(self.file_path, "r", encoding="utf-8") as f:
                 tournaments_data = json.load(f)
                 for pdata in tournaments_data:
-
+                    """ DEPLACER LE REFACTORING DANS L'OBJET PLAYER """
                     # rebuild players_list
                     if pdata.get("players_list"):
                         pdata["players_list"] = [Player(**p) for p in pdata["players_list"]]
@@ -53,8 +52,8 @@ class Tournaments:
                         if rdata.get("matches_list"):
                             for mdata in rdata["matches_list"]:
                                 # Each match stores players + color + score
-                                p1 = TournamentPlayer.from_dict(mdata["match"][0][0])
-                                p2 = TournamentPlayer.from_dict(mdata["match"][1][0])
+                                p1 = 0
+                                p2 = 0
 
                                 match = Match(
                                     player_1=p1.player, color_1=mdata["match"][0][1], score_1=mdata["match"][0][2],
@@ -108,9 +107,3 @@ class Tournaments:
     def list_tournaments(self):
         """Return a list of all tournaments."""
         return self.tournaments
-
-    """
-
-
-    """
-

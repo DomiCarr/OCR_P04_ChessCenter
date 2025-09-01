@@ -52,7 +52,7 @@ class Players:
                 return True
         return False  # Player not found
 
-    def get_player_by_id(self, national_id: str) -> Player | None:
+    def get_player_by_nid(self, national_id: str) -> Player | None:
         """Return a Player object by national_id, or None if not found."""
         for player in self.players:
             if player.national_id == national_id:
