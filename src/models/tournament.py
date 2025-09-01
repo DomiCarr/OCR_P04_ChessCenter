@@ -5,7 +5,6 @@ from datetime import datetime
 from models.tournament_round import TournamentRound
 from models.player import Player
 from models.match import Match
-from models.tournament_player import TournamentPlayer
 
 
 class Tournament:
@@ -69,10 +68,10 @@ class Tournament:
         round_name = f"{self.name} - Round {round_number}"
 
         # start the round for this tournament
-        round = Round(name=round_name,
-                      start_date=datetime.now(),
-                      matches_list=[]
-                      )
+        round = TournamentRound(name=round_name,
+                                start_date=datetime.now(),
+                                matches_list=[]
+                )
 
         # create the matches for this round
         self.create_matches(round, players_sorted)

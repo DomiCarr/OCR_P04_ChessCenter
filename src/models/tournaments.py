@@ -7,7 +7,7 @@ from datetime import datetime
 # Project modules
 from config import TOURNAMENTS_FILE_PATH
 from models.tournament import Tournament
-from models.tournament_round import Round
+from models.tournament_round import TournamentRound
 from models.player import Player
 from models.match import Match
 
@@ -20,26 +20,29 @@ class Tournaments:
         self.load_tournaments()
 
     def load_tournaments(self):
+        """Load tournaments from JSON file and rebuild Python objects."""
+
         try:
             with open(self.file_path, "r", encoding="utf-8") as f:
-                tournaments_data = json.load(f)
-                for pdata in tournaments_data:
+                tournaments_json = json.load(f)
+
+                for tournament_data in tournaments_json:
                     """ DEPLACER LE REFACTORING DANS L'OBJET PLAYER """
                     # rebuild players_list
-                    if pdata.get("players_list"):
-                        pdata["players_list"] = [Player(**p) for p in pdata["players_list"]]
+                    if tournament_data.get("players_list"):
+                        tournament_data["players_list"] = [Player(**p) for p in tournament_data["players_list"]]
 
                     # Convert dates from ISO strings to datetime
-                    if pdata.get("start_date"):
+                    if tournament_data.get("start_date"):
                         from datetime import datetime
-                        pdata["start_date"] = datetime.fromisoformat(pdata["start_date"])
-                    if pdata.get("end_date"):
-                        pdata["end_date"] = datetime.fromisoformat(pdata["end_date"])
+                        tournament_data["start_date"] = datetime.fromisoformat(tournament_data["start_date"])
+                    if tournament_data.get("end_date"):
+                        tournament_data["end_date"] = datetime.fromisoformat(tournament_data["end_date"])
 
                 # --- Rebuild rounds_list ---
                 rounds_list = []
-                if pdata.get("rounds_list"):
-                    for rdata in pdata["rounds_list"]:
+                if tournament_data.get("rounds_list"):
+                    for rdata in tournament_data["rounds_list"]:
 
                         # Convert round datetime fields
                         if rdata.get("start_datetime"):
@@ -63,13 +66,13 @@ class Tournaments:
 
                         # Inject rebuilt matches into the round
                         rdata["matches_list"] = matches_list
-                        rounds_list.append(Round(**rdata))
+                        rounds_list.append(TournamentRound(**rdata))
 
                 # Replace rounds_list with the rebuilt one
-                pdata["rounds_list"] = rounds_list
+                tournament_data["rounds_list"] = rounds_list
 
                 # --- Build the Tournament object ---
-                self.tournaments.append(Tournament(**pdata))
+                self.tournaments.append(Tournament(**tournament_data))
 
         except (FileNotFoundError, json.JSONDecodeError):
             self.tournaments = []

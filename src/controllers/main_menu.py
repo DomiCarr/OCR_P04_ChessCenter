@@ -1,7 +1,9 @@
 class MainMenu:
     def __init__(self,
-                 players_manager):
+                 players_manager,
+                 tournaments_manager):
         self.players_manager = players_manager
+        self.tournaments_manager = tournaments_manager
 
     def show_menu(self):
         """Display the main menu and handle user input."""
@@ -26,12 +28,12 @@ class MainMenu:
             self.players_manager.list_players()
         elif choice == "2":
             self.players_manager.add_player()
-#        elif choice == "3":
-#            self.tournaments_controller.add_tournament()
-#        elif choice == "4":
-#            self.tournaments_controller.add_tournament()
-#        elif choice == "5":
-#            self.tournaments_controller.register_players()
+        elif choice == "3":
+            self.tournaments_manager.list_tournaments()
+        elif choice == "4":
+            self.tournaments_manager.add_tournament()
+        elif choice == "5":
+            self.tournaments_manager.register_players()
 #        elif choice == "6":
 #            self.tournaments_controller.start_tournament()
 #        elif choice == "7":

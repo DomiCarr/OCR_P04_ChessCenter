@@ -7,13 +7,10 @@ from views.tournaments_view import TournamentsView
 
 
 class TournamentsManager:
-    def __init__(self,
-                 tournaments: Tournaments,
-                 players: Players,
-                 view: TournamentsView):
-        self.tournaments = tournaments
-        self.players = players
-        self.view = view
+    def __init__(self):
+        self.tournaments = Tournaments()
+        self.players = Players()
+        self.view = TournamentsView()
 
     def add_tournament(self):
         tournament_details = self.view.ask_new_tournament_details()

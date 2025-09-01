@@ -1,3 +1,6 @@
+from models.player import Player
+
+
 class Match:
 
     def __init__(self,
@@ -21,3 +24,25 @@ class Match:
                  self.match[1][2]]
             ]
         }
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        """Rebuild a Match object from a JSON dictionary."""
+        match_data = data.get("match", [])
+
+        player_1 = Player.from_dict(match_data[0][0])
+        color_1 = match_data[0][1]
+        score_1 = match_data[0][2]
+
+        player_2 = Player.from_dict(match_data[1][0])
+        color_2 = match_data[1][1]
+        score_2 = match_data[1][2]
+
+        return cls(
+                 player_1,
+                 color_1,
+                 score_1,
+                 player_2,
+                 color_2,
+                 score_2
+                 )

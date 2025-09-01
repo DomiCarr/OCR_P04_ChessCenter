@@ -1,3 +1,7 @@
+from datetime import datetime
+from models.match import Match
+
+
 class TournamentRound:
 
     def __init__(self,
@@ -23,7 +27,3 @@ class TournamentRound:
             "matches_list": matches_list_dict
         }
 
-
-"""
-renommer Round en TournamentRound
-"""

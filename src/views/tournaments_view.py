@@ -22,7 +22,7 @@ class TournamentsView:
         nids = input("Enter players national ids separated by comma: ").strip()
         return [i.strip() for i in nids.split(",") if i.strip()]
 
-    def display_message(self, message: str)
+    def display_message(self, message: str):
         """ Display a simple message"""
         print(message)
 
