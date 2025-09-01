@@ -54,6 +54,43 @@ class Tournament:
             "players_list": players_list_dict
         }
 
+    @classmethod
+    def from_dict(cls, data: dict):
+        """Rebuild tournament from JSON dictionnary"""
+        start_date_json = data.get("start_date")
+        start_date = (
+            datetime.fromisoformat(start_date_json)
+            if start_date_json else None
+        )
+
+        end_date_json = data.get("end_date")
+        end_date = (
+            datetime.fromisoformat(end_date_json)
+            if end_date_json else None
+        )
+
+        # rebuild players
+        players_list = []
+        for p in data.get("players_list", []):
+            players_list.append(Player.from_dict(p))
+
+        # rebuild rounds
+        rounds_list = []
+        for r in data.get("rounds_list", []):
+            rounds_list.append(TournamentRound.from_dict(r))
+
+        return cls(
+            name=data.get("name", ""),
+            location=data.get("location", ""),
+            start_date=start_date,
+            end_date=end_date,
+            nb_of_rounds=data.get("nb_of_rounds", 4),
+            ongoing_round_number=data.get("ongoing_round_number", 0),
+            rounds_list=rounds_list,
+            players_list=players_list,
+            description=data.get("description", "")
+        )
+
     def start_tournament(self):
         if self.start_date:
             return None
