@@ -15,9 +15,12 @@ class Players:
         """Load all players from the JSON file into self.players."""
         try:
             with open(self.file_path, "r", encoding="utf-8") as f:
-                players_data = json.load(f)
-                for pdata in players_data:
-                    self.players.append(Player(**pdata))
+                players_json = json.load(f)
+
+                self.players = []
+                for player_data in players_json:
+                    self.players.append(Player.from_dict(player_data))
+
         except (FileNotFoundError, json.JSONDecodeError):
             self.players = []
 

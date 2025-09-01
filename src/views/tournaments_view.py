@@ -1,7 +1,8 @@
 # views/tournaments_view.py
+from views.base_view import BaseView
 
 
-class TournamentsView:
+class TournamentsView(BaseView):
     def ask_new_tournament_details(self) -> dict:
         """Prompt the user for details to create a tournament."""
         name = input("Tournament name: ").strip()
@@ -21,10 +22,6 @@ class TournamentsView:
         """Ask the user to enter players national ids"""
         nids = input("Enter players national ids separated by comma: ").strip()
         return [i.strip() for i in nids.split(",") if i.strip()]
-
-    def display_message(self, message: str):
-        """ Display a simple message"""
-        print(message)
 
     def display_tournaments(self, tournaments: list):
         print("\n=== Tournaments List ===")

@@ -1,9 +1,9 @@
 """views/players_view.py"""
-
+from views.base_view import BaseView
 from models.player import Player
 
 
-class PlayersView():
+class PlayersView(BaseView):
     def ask_new_player(self) -> dict:
         """Ask user to enter new player data."""
         print("\n=== Add New Player ===")
@@ -22,7 +22,3 @@ class PlayersView():
         print("\n=== Players List ===")
         for p in players:
             print(f"{p.national_id} - {p.first_name} {p.last_name} (born {p.birth_date})")
-
-    def display_message(self, message: str):
-        """Display a simple message."""
-        print(message)
