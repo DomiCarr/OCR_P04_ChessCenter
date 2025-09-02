@@ -118,3 +118,7 @@ class TournamentsManager:
             return
 
         print("match results: ", match_results)
+
+        for match in current_tournament.matches:
+            print(match.to_dict())
+
