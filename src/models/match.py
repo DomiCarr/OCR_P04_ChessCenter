@@ -45,3 +45,8 @@ class Match:
                  color_2,
                  score_2
                  )
+
+    def update_match_scores(self, score1: float, score2: float):
+        """update match score for both players"""
+        self.match[0][2] = score1
+        self.match[1][2] = score2

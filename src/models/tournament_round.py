@@ -1,5 +1,6 @@
 from datetime import datetime
 from models.match import Match
+from typing import List
 
 
 class TournamentRound:
@@ -8,7 +9,7 @@ class TournamentRound:
                  name,
                  start_datetime,
                  end_datetime,
-                 matches_list):
+                 matches_list: List[Match]):
         self.name = name
         self.start_datetime = start_datetime
         self.end_datetime = end_datetime
@@ -51,3 +52,16 @@ class TournamentRound:
             end_datetime=round_end_datetime,
             matches_list=round_matches_list
         )
+
+    def enter_match_results(
+            self, match_results: list[tuple[str, float, str, float]]):
+        """update one match results"""
+        for nid1, score1, nid2, score2 in match_results:
+            for match in self.matches_list:
+                nids = [
+                    match.match[0][0].national_id,
+                    match.match[1][0].national_id
+                ]
+                if (nid1 in nids) and (nid2 in nids):
+                    match.update_match_scores(score1, score2)
+                    break
