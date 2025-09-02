@@ -41,8 +41,8 @@ class MainMenu:
             self.tournaments_manager.start_tournament()
         elif choice == "8":
             self.tournaments_manager.start_round()
-#        elif choice == "9":
-#            self.tournaments_manager.enter_results()
+        elif choice == "9":
+            self.tournaments_manager.enter_match_results()
 
         elif choice == "0":
             print("Exiting...")

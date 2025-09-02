@@ -101,3 +101,20 @@ class TournamentsManager:
         self.view.display_message(
             f"Round {current_tournament.ongoing_round_number} of '{name}' started."
         )
+
+    def enter_match_results(self):
+        """Update the tournament with the match results"""
+
+        name = self.view.ask_tournament_name()
+        current_tournament = self.tournaments.get_tournament_by_name(name)
+
+        if not current_tournament:
+            self.view.display_message(f"Tournament '{name}' not found.")
+            return  # tournament not found
+
+        # Ask match results
+        match_results = self.view.ask_match_results()
+        if not match_results:
+            return
+
+        print("match results: ", match_results)

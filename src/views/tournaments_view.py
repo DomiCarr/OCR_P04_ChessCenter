@@ -53,8 +53,9 @@ class TournamentsView(BaseView):
         items = [results.strip() for results in
                  input(
                         "Enter match results (nid1, score 1, nid2, score 2: "
-                        ).strip()]
-
+                        ).strip().split(',')]
+        print("items: ", items)
+        print("len items: ", len(items))
         if len(items) != 4:
             print(f"Results entry, must have 4 items: {items}")
             return None
@@ -70,10 +71,3 @@ class TournamentsView(BaseView):
         nid_2 = items[2]
 
         return nid_1, score_1, nid_2, score_2
-
-    def ask_match_results(self, tournament_round):
-        """ Ask match results """
-        match_results = []
-
-        for match in tournament_round.matches_list:
-            player1 = match.match[0][0]            player1 = match.match[0][0]
