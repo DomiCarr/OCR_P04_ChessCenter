@@ -119,7 +119,7 @@ class TournamentsView(BaseView):
         return nid_1, score_1, nid_2, score_2
 
     def display_round_start(self, tournament: "Tournament"):
-        current_round = tournament.get_ongoing_round()
+        current_round = tournament.rounds_list[tournament.ongoing_round_number - 1]
         print(f"'{current_round.name}' started  ===")
 
     def display_tournament_winner(self, tournament: Tournament):

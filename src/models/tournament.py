@@ -1,5 +1,6 @@
 import random
 from typing import List
+from typing import Optional
 from datetime import datetime
 
 from models.tournament_round import TournamentRound
@@ -184,7 +185,7 @@ class Tournament:
 
         return scores
 
-    def get_tournament_winner(self) -> tuple["Player" | None, float]:
+    def get_tournament_winner(self) -> tuple[Optional["Player"], float]:
         """determine winner of the tournament"""
         scores = self.compute_tournament_players_score()
 
