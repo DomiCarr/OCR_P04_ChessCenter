@@ -65,3 +65,12 @@ class TournamentRound:
                 if (nid1 in nids) and (nid2 in nids):
                     match.update_match_scores(score1, score2)
                     break
+
+    def round_has_remaining_ongoing_matches(self) -> bool:
+        """Return true if at least one match has score 1 & score2 = 0"""
+        for match in self.matches_list:
+            score1 = match.match[0][2]
+            score2 = match.match[1][2]
+            if score1 + score2 == 0:
+                return True
+            return False

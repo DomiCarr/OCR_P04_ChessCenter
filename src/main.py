@@ -16,3 +16,15 @@ if __name__ == "__main__":
     # Launch the main menu
     main_menu = MainMenu(players_manager, tournaments_manager)
     main_menu.show_menu()     # Launch CLI
+
+
+
+    """
+    main: separer l'instaciation des modeles
+    main_menu :
+
+
+
+
+    """
+

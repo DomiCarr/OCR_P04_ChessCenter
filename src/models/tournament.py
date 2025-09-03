@@ -96,6 +96,8 @@ class Tournament:
             return None
         self.ongoing_round_number = 1
         self.start_date = datetime.now()
+        # Automatically start the first round
+        self.start_round(self.ongoing_round_number)
 
     def start_round(self, round_number):
         # Sort the players :shuffle for round 1, sort by score for others
@@ -149,3 +151,55 @@ class Tournament:
 
             # Add the match to the rounds matches list
             tournament_round.matches_list.append(match)
+
+    def close_tournament(self):
+        """close the tournament"""
+        if not self.start_date:
+            # tournament never started
+            return
+
+        if self.end_date:
+            # tournament already closed
+            return
+
+        self.end_date = datetime.now()
+
+    def compute_tournament_players_score(self) -> dict[str, float]:
+        """compute the player's tournament scores"""
+        scores: dict[str, float] = {}
+
+        for round in self.rounds_list:
+            for match in round.matches_list:
+                player1 = match.match[0][0]
+                score1 = match.match[0][2]
+                player2 = match.match[1][0]
+                score2 = match.match[1][2]
+
+                scores[player1.national_id] = scores.get(
+                    player1.national_id, 0.0
+                ) + score1
+                scores[player2.national_id] = scores.get(
+                    player2.national_id, 0.0
+                ) + score2
+
+        return scores
+
+    def get_tournament_winner(self) -> tuple["Player" | None, float]:
+        """determine winner of the tournament"""
+        scores = self.compute_tournament_players_score()
+
+        if not scores:
+            return None, 0.0
+
+        # the winner is the payer with the highest score
+        winner_nid = max(scores, key=lambda nid: scores[nid])
+        winner_score = scores[winner_nid]
+
+        # retrieve the winner player
+        winner_player = next(
+            (p for p in self.players_list if p.national_id == winner_nid), None
+        )
+
+        return winner_player, winner_score
+
+

@@ -102,7 +102,7 @@ class TournamentsManager:
             f"Round {current_tournament.ongoing_round_number} of '{name}' started."
         )
 
-    def enter_match_results(self):
+    def update_match_results(self):
         """Update the tournament with the match results"""
 
         name = self.view.ask_tournament_name()
@@ -123,15 +123,23 @@ class TournamentsManager:
         if not match_results:
             return
 
-        print("match results: ", match_results)
-
         # Save updated tournament and display the new results
         ongoing_round.update_match_results([match_results])
         self.tournaments.update_tournament(current_tournament)
         self.view.display_round_matches(ongoing_round)
 
-        """  // RAF //
-        si tous les matchs sont finis
-            lancer le round suivant et incrementer le ongoing_round
-        """
+        # Check if round is finished
+        if not ongoing_round.round_has_remaining_ongoing_matches():
+            # If last round, close tournament
+            if current_tournament.ongoing_round_number >= current_tournament.nb_of_rounds:
+                current_tournament.close_tournament()
+                self.tournaments.update_tournament(current_tournament)
+                self.view.display_tournament_winner(current_tournament)
+            else:
+                # Start next round
+                current_tournament.ongoing_round_number += 1
+                current_tournament.start_round(current_tournament.ongoing_round_number)
+                self.tournaments.update_tournament(current_tournament)
+                self.view.display_round_start(current_tournament)
+
 
