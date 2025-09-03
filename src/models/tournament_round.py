@@ -53,7 +53,7 @@ class TournamentRound:
             matches_list=round_matches_list
         )
 
-    def enter_match_results(
+    def update_match_results(
             self, match_results: list[tuple[str, float, str, float]]):
         """update one match results"""
         for nid1, score1, nid2, score2 in match_results:

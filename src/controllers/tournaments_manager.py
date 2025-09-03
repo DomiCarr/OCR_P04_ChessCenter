@@ -125,8 +125,12 @@ class TournamentsManager:
 
         print("match results: ", match_results)
 
+        # Save updated tournament and display the new results
+        ongoing_round.update_match_results([match_results])
+        self.tournaments.update_tournament(current_tournament)
+        self.view.display_round_matches(ongoing_round)
+
         """  // RAF //
-        enregistrer les modification
         si tous les matchs sont finis
             lancer le round suivant et incrementer le ongoing_round
         """
