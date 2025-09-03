@@ -71,3 +71,22 @@ class TournamentsView(BaseView):
         nid_2 = items[2]
 
         return nid_1, score_1, nid_2, score_2
+
+    def display_round_matches(self,
+                              current_round: TournamentRound,
+                              comment="Matches list"):
+        """print all matches for a round"""
+        print(f"\n --------- {comment} ----------- ")
+        for match in current_round.matches_list:
+            p1, col1, score1 = match.match[0]
+            p2, col2, score2 = match.match[1]
+            print(f"{p1.national_id} {p1.first_name} {p1.last_name} "
+                  f"({col1}) score: {score1} --- "
+                  f"{p2.national_id} {p2.first_name} {p2.last_name} "
+                  f"({col2}) score: {score2} "
+                  )
+
+
+
+
+

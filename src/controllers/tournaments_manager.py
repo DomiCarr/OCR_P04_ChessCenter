@@ -112,6 +112,12 @@ class TournamentsManager:
             self.view.display_message(f"Tournament '{name}' not found.")
             return  # tournament not found
 
+        # Display ongoing round matches
+        ongoing_round = current_tournament.rounds_list[
+            current_tournament.ongoing_round_number - 1
+        ]
+        self.view.display_round_matches(ongoing_round)
+
         # Ask match results
         match_results = self.view.ask_match_results()
         if not match_results:
@@ -119,6 +125,9 @@ class TournamentsManager:
 
         print("match results: ", match_results)
 
-        for match in current_tournament.matches:
-            print(match.to_dict())
+        """  // RAF //
+        enregistrer les modification
+        si tous les matchs sont finis
+            lancer le round suivant et incrementer le ongoing_round
+        """
 
