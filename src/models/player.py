@@ -7,11 +7,13 @@ class Player:
     def __init__(self, national_id: str,
                  first_name: str,
                  last_name: str,
-                 birth_date: date | None):
+                 birth_date: date | None,
+                 elo: int = 1200):
         self.national_id = national_id
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
+        self.elo = int(elo)
 
     def to_dict(self) -> dict:
         """Convert player object to dictionary for JSON saving."""
@@ -20,7 +22,8 @@ class Player:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "birth_date": self.birth_date.isoformat()
-            if self.birth_date else None
+            if self.birth_date else None,
+            "elo": int(self.elo)
         }
 
     @classmethod
@@ -32,10 +35,12 @@ class Player:
             datetime.fromisoformat(birth_date_json).date()
             if birth_date_json else None
         )
+        elo_value = data.get("elo", 1200)
 
         return cls(
             national_id=data.get("national_id", ""),
             first_name=data.get("first_name", ""),
             last_name=data.get("last_name", ""),
-            birth_date=birth_date_obj
+            birth_date=birth_date_obj,
+            elo=int(elo_value)
         )

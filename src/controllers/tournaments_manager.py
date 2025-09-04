@@ -22,6 +22,26 @@ class TournamentsManager:
 
         self.view.display_tournament_details(current_tournament)
 
+    def display_tournament_players(self):
+        name = self.view.ask_tournament_name()
+        current_tournament = self.tournaments.get_tournament_by_name(name)
+
+        if not current_tournament:
+            self.view.display_message(f"Tournament '{name}' not found.")
+            return
+
+        self.view.display_tournament_players(current_tournament)
+
+    def display_tournament_ranked_players(self):
+        name = self.view.ask_tournament_name()
+        current_tournament = self.tournaments.get_tournament_by_name(name)
+
+        if not current_tournament:
+            self.view.display_message(f"Tournament '{name}' not found.")
+            return
+
+        self.view.display_players_ranking(current_tournament)
+
     def add_tournament(self):
         tournament_details = self.view.ask_new_tournament_details()
         name = tournament_details["name"]
@@ -141,11 +161,3 @@ class TournamentsManager:
                 current_tournament.start_round(current_tournament.ongoing_round_number)
                 self.tournaments.update_tournament(current_tournament)
                 self.view.display_round_start(current_tournament)
-
-
-"""
-AA04,1,AA06,0
-AA08,1,AA03,0
-AA02,1,AA01,0
-AA07,1,AA05,0
-"""

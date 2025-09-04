@@ -208,4 +208,13 @@ class Tournament:
 
         return winner_player, winner_score
 
+    def has_players_played_each_other(self, nid1: str, nid2: str) -> bool:
+        """True if players have already played each other in the tournament"""
+        for round in self.rounds_list:
+            for match in round.matches_list:
+                player1_nid = match.match[0][0].national_id
+                player2_nid = match.match[1][0].national_id
+                if {player1_nid, player2_nid} == {nid1, nid2}:
+                    return True
+        return False
 

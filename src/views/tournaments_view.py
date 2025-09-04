@@ -28,7 +28,7 @@ class TournamentsView(BaseView):
         return [i.strip() for i in nids.split(",") if i.strip()]
 
     def display_tournaments(self, tournaments: List[Tournament]):
-        print("\n=== Tournaments List ===")
+        print("----- Tournaments List --------------------------------")
         for t in tournaments:
             print(
                 f"- {t.name} at {t.location}, "
@@ -37,13 +37,13 @@ class TournamentsView(BaseView):
 
     def display_tournament_players(self, tournament: "Tournament"):
         """Display the tournament players"""
-        print("\ ----- Tournament  ----- ")
+        print("----- Tournaments -------------------------------------------")
         print(f"Name:  {tournament.name}")
         print(f"Location:  {tournament.location}")
         print(f"Description:  {tournament.description}")
         print(f"Start date:  {tournament.start_date}")
         print(f"Ongoing round:  {tournament.ongoing_round_number}")
-        print(" ------ Registered Players ------ ")
+        print("----- Tournaments Registered players --------------------------------")
         players: list[Player] = tournament.players_list
         for player in players:
             print(
@@ -78,7 +78,7 @@ class TournamentsView(BaseView):
 
     def display_tournament_details(self, tournament: "Tournament"):
         """Display the tournament details"""
-        print(" ------ Tournament Details ------ ")
+        print("----- Tournaments Details  --------------------------------")
         print(f"Name:  {tournament.name}")
         print(f"Location:  {tournament.location}")
         print(f"Description:  {tournament.description}")
@@ -138,3 +138,25 @@ class TournamentsView(BaseView):
                 f"\nTournament '{tournament.name}' finished."
                 f"No winner found."
                 )
+
+    def display_players_ranking(self, tournament: Tournament):
+        """Display players ranking by score (highest first)."""
+
+        if not tournament.players_list:
+            print("No players registered for this tournament.")
+            return
+
+        scores = tournament.compute_tournament_players_score()
+
+        sorted_players = sorted(
+            tournament.players_list,
+            key=lambda p: scores.get(p.national_id, 0.0),
+            reverse=True
+        )
+
+        print(f"---- Players ranking for Tournament '{tournament.name} ----")
+
+        for idx, player in enumerate(sorted_players, start=1):
+            score = scores.get(player.national_id, 0.0)
+            print(f"{idx}. {player.first_name} {player.last_name} "
+                  f"(NID: {player.national_id}) - Score: {score}")
