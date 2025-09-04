@@ -215,8 +215,21 @@ class TournamentsManager:
         Find the first valid opponent for the given player among candidates.
         Return None if no valid opponent is found.
         """
-        for opponent in opponents:
-            if not current_tournament.players_played_together(
-                player.national_id, opponent.national_id):
+        print("find_valid_opponent - start")
+        print("find_valid_opponent - player:", player)
+        print("find_valid_opponent - opponents:", opponents)
+        print("find_valid_opponent - current_tournament:", current_tournament.name)
+
+        for idx, opponent in enumerate(opponents, start=1):
+            print(f"find_valid_opponent - checking opponent {idx}:", opponent)
+            played_before = current_tournament.players_played_together(
+                player.national_id, opponent.national_id)
+            print(f"find_valid_opponent - player {player.national_id} vs opponent {opponent.national_id} - played_before:", played_before)
+
+            if not played_before:
+                print(f"find_valid_opponent - valid opponent found:", opponent)
                 return opponent
+
+        print("find_valid_opponent - no valid opponent found")
         return None
+

@@ -136,7 +136,8 @@ class Tournament:
             )
         return self.players_list
 
-    def create_matches(self, tournament_round: "TournamentRound",
+    def create_matches(self,
+                       tournament_round: "TournamentRound",
                        players_sorted: list["Player"]) -> None:
         """
         Create matches for the given round.
@@ -145,25 +146,60 @@ class Tournament:
         - Randomly assign colors.
         - Handle odd number of players (last player gets no match).
         """
-        for i in range(0, len(players_sorted) - 1, 2):
-            p1 = players_sorted[i]
-            p2 = players_sorted[i+1]
+        print("create_matches - players_sorted:", players_sorted)
+        players_to_pair = players_sorted.copy()
+        print("create_matches - players_to_pair (copy):", players_to_pair)
+        matches = []
 
-            # Randomly assign the color to the players
+        while len(players_to_pair) > 1:
+            p1 = players_to_pair[0]
+            print("create_matches - p1:", p1)
+
+            opponent = self._find_valid_opponent(p1, players_to_pair[1:])
+            print("create_matches - opponent:", opponent)
+
+            # Random color assignment
             colors_choice = [("white", "black"), ("black", "white")]
             color1, color2 = random.choice(colors_choice)
+            print("create_matches - color1, color2:", color1, color2)
 
-            # create a match
-            match = Match(player_1=p1,
-                          color_1=color1,
-                          score_1=0,
-                          player_2=p2,
-                          color_2=color2,
-                          score_2=0
-                          )
+            match = Match(
+                player_1=p1,
+                color_1=color1,
+                score_1=0,
+                player_2=opponent,
+                color_2=color2,
+                score_2=0
+            )
+            print("create_matches - match created:", match)
+            matches.append(match)
+            print("create_matches - matches list now:", matches)
 
-            # Add the match to the rounds matches list
-            tournament_round.matches_list.append(match)
+            # Remove paired players
+            players_to_pair.remove(p1)
+            players_to_pair.remove(opponent)
+            print("create_matches - players_to_pair after removal:", players_to_pair)
+
+        # If odd number of players, one remains without opponent
+        if players_to_pair:
+            bye_player = players_to_pair[0]
+            print("create_matches - bye_player:", bye_player)
+
+            match = Match(
+                player_1=bye_player,
+                color_1="white",
+                score_1=1.0,  # Free point
+                player_2=None,
+                color_2=None,
+                score_2=0.0
+            )
+            matches.append(match)
+            print("create_matches - match with bye appended:", match)
+            print("create_matches - matches list now:", matches)
+
+        tournament_round.matches_list.extend(matches)
+        print("create_matches - final tournament_round.matches_list:", tournament_round.matches_list)
+
 
     def close_tournament(self):
         """close the tournament"""
