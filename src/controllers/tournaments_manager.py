@@ -1,5 +1,6 @@
 # controllers/tournaments_manager.py
 
+from models.base import compute_elo
 from models.tournaments import Tournaments
 from models.tournament import Tournament
 from models.players import Players
@@ -143,6 +144,9 @@ class TournamentsManager:
         if not match_results:
             return
 
+        # compute and update players elo
+        self.update_players_elo(match_results)
+
         # Save updated tournament and display the new results
         ongoing_round.update_match_results([match_results])
         self.tournaments.update_tournament(current_tournament)
@@ -161,3 +165,33 @@ class TournamentsManager:
                 current_tournament.start_round(current_tournament.ongoing_round_number)
                 self.tournaments.update_tournament(current_tournament)
                 self.view.display_round_start(current_tournament)
+
+    def update_players_elo(self, match_results: dict):
+        """update ELO for both players match"""
+        p1_nid = match_results["player1_nid"]
+        p2_nid = match_results["player2_nid"]
+        p1_score = match_results["player1_score"]
+        p2_score = match_results["player2_score"]
+
+        player1 = self.players.get_player_by_nid(p1_nid)
+        player2 = self.players.get_player_by_nid(p2_nid)
+
+        if not player1 or not player2:
+            return
+
+        # Compute new Elo values using both players' scores
+        new_elo_p1, new_elo_p2 = compute_elo(
+            player1_current_elo=player1.elo,
+            player2_current_elo=player2.elo,
+            player1_score=p1_score,
+            player2_score=p2_score
+        )
+
+        # update players ELO
+        player1.elo = new_elo_p1
+        player2.elo = new_elo_p2
+
+        # save players ELO
+        self.players.update_player(player1)
+        self.players.update_player(player2)
+

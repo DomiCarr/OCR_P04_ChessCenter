@@ -4,6 +4,7 @@
 def compute_elo(player1_current_elo: int,
                 player2_current_elo: int,
                 player1_score: float,
+                player2_score: float,
                 k_factor: int = 20) -> tuple[int, int]:
     """
     Compute new Elo values for two players after a match.
@@ -33,6 +34,7 @@ def compute_elo(player1_current_elo: int,
     print(f"player1_current_elo: {player1_current_elo}")
     print(f"player2_current_elo: {player2_current_elo}")
     print(f"player1_score: {player1_score}")
+    print(f"player2_score: {player2_score}")
     print(f"k_factor: {k_factor}")
 
     # Expected scores for each player
@@ -43,10 +45,6 @@ def compute_elo(player1_current_elo: int,
 
     print(f"expected_score_player1: {expected_score_player1}")
     print(f"expected_score_player2: {expected_score_player2}")
-
-    # Actual score for player 2
-    player2_score = 1.0 - player1_score
-    print(f"player2_score: {player2_score}")
 
     # Update Elo
     new_elo_player1 = int(round(player1_current_elo +
