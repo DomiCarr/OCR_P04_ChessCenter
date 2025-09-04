@@ -158,5 +158,9 @@ class TournamentsView(BaseView):
 
         for idx, player in enumerate(sorted_players, start=1):
             score = scores.get(player.national_id, 0.0)
-            print(f"{idx}. {player.first_name} {player.last_name} "
-                  f"(NID: {player.national_id}) - Score: {score}")
+            print(
+                f"({idx}. NID: {player.national_id}) "
+                f"{player.first_name} {player.last_name}"
+                f"(ELO: {player.elo}) - Score: {score}"
+                )
+

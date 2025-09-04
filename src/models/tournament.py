@@ -112,7 +112,7 @@ class Tournament:
                                            start_datetime=datetime.now(),
                                            end_datetime=None,
                                            matches_list=[]
-                )
+                                           )
 
         # create the matches for this round
         self.create_matches(tournament_round, players_sorted)
@@ -131,13 +131,20 @@ class Tournament:
             scores = self.compute_tournament_players_score()
             # sort players by their score in descending order
             self.players_list.sort(
-                key=lambda p: scores.get(p.national_id, 0.0),
-                reverse=True
+                    key=lambda p: (scores.get(p.national_id, 0.0), p.elo),
+                    reverse=True
             )
         return self.players_list
 
     def create_matches(self, tournament_round: "TournamentRound",
                        players_sorted: list["Player"]) -> None:
+        """
+        Create matches for the given round.
+        - Players are paired consecutively by score (ELO as tie-break).
+        - If a pair has already played, search next available player.
+        - Randomly assign colors.
+        - Handle odd number of players (last player gets no match).
+        """
         for i in range(0, len(players_sorted) - 1, 2):
             p1 = players_sorted[i]
             p2 = players_sorted[i+1]
@@ -177,9 +184,9 @@ class Tournament:
         for round in self.rounds_list:
             for match in round.matches_list:
                 player1 = match.match[0][0]
-                score1 = match.match[0][2]
+                score1 = match.match[0][1]
                 player2 = match.match[1][0]
-                score2 = match.match[1][2]
+                score2 = match.match[1][1]
 
                 scores[player1.national_id] = scores.get(
                     player1.national_id, 0.0
@@ -208,7 +215,7 @@ class Tournament:
 
         return winner_player, winner_score
 
-    def has_players_played_each_other(self, nid1: str, nid2: str) -> bool:
+    def players_played_together(self, nid1: str, nid2: str) -> bool:
         """True if players have already played each other in the tournament"""
         for round in self.rounds_list:
             for match in round.matches_list:

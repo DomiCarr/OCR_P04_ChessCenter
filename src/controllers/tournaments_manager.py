@@ -4,6 +4,7 @@ from models.base import compute_elo
 from models.tournaments import Tournaments
 from models.tournament import Tournament
 from models.players import Players
+from models.player import Player
 from views.tournaments_view import TournamentsView
 
 
@@ -166,32 +167,56 @@ class TournamentsManager:
                 self.tournaments.update_tournament(current_tournament)
                 self.view.display_round_start(current_tournament)
 
-    def update_players_elo(self, match_results: dict):
-        """update ELO for both players match"""
-        p1_nid = match_results["player1_nid"]
-        p2_nid = match_results["player2_nid"]
-        p1_score = match_results["player1_score"]
-        p2_score = match_results["player2_score"]
+    def update_players_elo(self, match_results: tuple):
+        """update ELO for both players match with debug prints"""
+        print("=== update_players_elo START ===")
+        print(f"match_results: {match_results}")
 
-        player1 = self.players.get_player_by_nid(p1_nid)
-        player2 = self.players.get_player_by_nid(p2_nid)
+        player1 = match_results[0][0]
+        player2 = match_results[1][0]
+        score1 = match_results[0][1]
+        score2 = match_results[1][1]
 
-        if not player1 or not player2:
-            return
+        print(f"player1 object: {player1}")
+        print(f"player2 object: {player2}")
+        print(f"score1: {score1}")
+        print(f"score2: {score2}")
+        print(f"player1 current elo: {player1.elo}")
+        print(f"player2 current elo: {player2.elo}")
 
-        # Compute new Elo values using both players' scores
         new_elo_p1, new_elo_p2 = compute_elo(
             player1_current_elo=player1.elo,
             player2_current_elo=player2.elo,
-            player1_score=p1_score,
-            player2_score=p2_score
+            player1_score=score1,
+            player2_score=score2
         )
 
-        # update players ELO
+        print(f"new_elo_p1: {new_elo_p1}")
+        print(f"new_elo_p2: {new_elo_p2}")
+
+        # Update ELO
         player1.elo = new_elo_p1
         player2.elo = new_elo_p2
 
-        # save players ELO
+        print(f"player1 updated elo: {player1.elo}")
+        print(f"player2 updated elo: {player2.elo}")
+
+        # Save players
         self.players.update_player(player1)
         self.players.update_player(player2)
 
+        print("=== update_players_elo END ===")
+
+    def find_valid_opponent(self,
+                            player: "Player",
+                            opponents: list["Player"],
+                            current_tournament: Tournament) -> "Player" | None:
+        """
+        Find the first valid opponent for the given player among candidates.
+        Return None if no valid opponent is found.
+        """
+        for opponent in opponents:
+            if not current_tournament.players_played_together(
+                player.national_id, opponent.national_id):
+                return opponent
+        return None

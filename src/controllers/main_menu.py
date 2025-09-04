@@ -12,10 +12,10 @@ class MainMenu:
             print("1. List the players")
             print("2. Add a player")
             print("3. List the tournaments")
-            print("4. List tournament registerd players")
+            print("4. Add a tournament")
             print("5. Display a tournament details")
-            print("6. Add a tournament")
-            print("7. Register players to a tournament")
+            print("6. Register players to a tournament")
+            print("7. List tournament registerd players")
             print("8. Start tournament")
             print("9. Enter match results")
             print("91. List tournament ranked players")
@@ -33,20 +33,19 @@ class MainMenu:
         elif choice == "3":
             self.tournaments_manager.list_tournaments()
         elif choice == "4":
-            self.tournaments_manager.display_tournament_players()
+            self.tournaments_manager.add_tournament()
         elif choice == "5":
             self.tournaments_manager.display_tournament()
         elif choice == "6":
-            self.tournaments_manager.add_tournament()
-        elif choice == "7":
             self.tournaments_manager.register_tournament_players()
+        elif choice == "7":
+            self.tournaments_manager.display_tournament_players()
         elif choice == "8":
             self.tournaments_manager.start_round()
         elif choice == "9":
             self.tournaments_manager.update_match_results()
         elif choice == "91":
             self.tournaments_manager.display_tournament_ranked_players()
-
         elif choice == "0":
             print("Exiting...")
             exit(0)
