@@ -73,4 +73,4 @@ class TournamentRound:
             score2 = match.match[1][2]
             if score1 + score2 == 0:
                 return True
-            return False
+        return False

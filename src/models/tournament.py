@@ -110,7 +110,7 @@ class Tournament:
         # start the round for this tournament
         tournament_round = TournamentRound(name=round_name,
                                            start_datetime=datetime.now(),
-                                           end_datetime=None,  # will be set when the round is closed
+                                           end_datetime=None,
                                            matches_list=[]
                 )
 
@@ -128,7 +128,12 @@ class Tournament:
         if round_number == 1:
             random.shuffle(self.players_list)
         else:
-            random.shuffle(self.players_list)
+            scores = self.compute_tournament_players_score()
+            # sort players by their score in descending order
+            self.players_list.sort(
+                key=lambda p: scores.get(p.national_id, 0.0),
+                reverse=True
+            )
         return self.players_list
 
     def create_matches(self, tournament_round: "TournamentRound",

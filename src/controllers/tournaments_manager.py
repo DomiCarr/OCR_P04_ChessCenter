@@ -143,3 +143,9 @@ class TournamentsManager:
                 self.view.display_round_start(current_tournament)
 
 
+"""
+AA04,1,AA06,0
+AA08,1,AA03,0
+AA02,1,AA01,0
+AA07,1,AA05,0
+"""

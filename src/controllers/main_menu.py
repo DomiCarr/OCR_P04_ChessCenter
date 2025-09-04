@@ -17,7 +17,7 @@ class MainMenu:
             print("6. Add a tournament")
             print("7. Register players to a tournament")
             print("8. Start tournament")
-            print("9. Enter round results")
+            print("9. Enter match results")
             print("0. Exit")
 
             choice = input("Select an option: ").strip()
