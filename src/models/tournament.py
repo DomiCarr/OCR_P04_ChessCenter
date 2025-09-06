@@ -93,14 +93,31 @@ class Tournament:
         )
 
     def start_tournament(self):
+        """Start the tournament and automatically start the first round"""
         if self.start_date:
-            return None
-        self.ongoing_round_number = 1
-        self.start_date = datetime.now()
-        # Automatically start the first round
-        self.start_round(self.ongoing_round_number)
+            # Tournament already started
+            return
 
-    def start_round(self, round_number):
+        self.start_date = datetime.now()
+
+        print(f"start_tournament - Tournament {self.name} starting at "
+              f"{self.start_date}")
+
+        # Start the first round
+        self.start_round()
+
+    def start_round(self):
+        """Start a new round based on the current ongoing_round_number"""
+        if self.ongoing_round_number > self.nb_of_rounds:
+            print("start_round - All rounds completed")
+            return
+
+        # Increment ongoing_round_number for next round
+        self.ongoing_round_number += 1
+
+        round_number = self.ongoing_round_number
+        print(f"start_round - Starting round {round_number}")
+
         # Sort the players :shuffle for round 1, sort by score for others
         players_sorted = self.sort_players(round_number)
 
@@ -114,11 +131,15 @@ class Tournament:
                                            matches_list=[]
                                            )
 
-        # create the matches for this round
+        # Create the matches for this round
         self.create_matches(tournament_round, players_sorted)
 
         # Register the round in the tournament
         self.rounds_list.append(tournament_round)
+        print(f"start_round - Round {round_name} created with "
+              f"{len(tournament_round.matches_list)} matches")
+
+
 
     def sort_players(self, round_number: int) -> List["Player"]:
         """Sort the players :shuffle for round 1, sort by score for others"""
@@ -128,40 +149,32 @@ class Tournament:
         if round_number == 1:
             random.shuffle(self.players_list)
         else:
-            scores = self.compute_tournament_players_score()
-            # sort players by their score in descending order
+            scores = self.compute_tournament_players_score(self.rounds_list)
+            # Sort players by their score in descending order
+            # Elo removed, now only score is used
             self.players_list.sort(
-                    key=lambda p: (scores.get(p.national_id, 0.0), p.elo),
-                    reverse=True
+                key=lambda p: (scores.get(p.national_id, 0.0), p.national_id),
+                reverse=True
             )
         return self.players_list
 
-    def create_matches(self,
-                       tournament_round: "TournamentRound",
-                       players_sorted: list["Player"]) -> None:
+    def create_matches(self, tournament_round: "TournamentRound",
+                    players_sorted: list["Player"]) -> None:
         """
         Create matches for the given round.
-        - Players are paired consecutively by score (ELO as tie-break).
-        - If a pair has already played, search next available player.
-        - Randomly assign colors.
-        - Handle odd number of players (last player gets no match).
+        - Players are paired consecutively by score.
+        - Colors are randomly assigned.
         """
-        print("create_matches - players_sorted:", players_sorted)
         players_to_pair = players_sorted.copy()
-        print("create_matches - players_to_pair (copy):", players_to_pair)
         matches = []
 
         while len(players_to_pair) > 1:
             p1 = players_to_pair[0]
-            print("create_matches - p1:", p1)
-
-            opponent = self._find_valid_opponent(p1, players_to_pair[1:])
-            print("create_matches - opponent:", opponent)
+            opponent = players_to_pair[1]
 
             # Random color assignment
             colors_choice = [("white", "black"), ("black", "white")]
             color1, color2 = random.choice(colors_choice)
-            print("create_matches - color1, color2:", color1, color2)
 
             match = Match(
                 player_1=p1,
@@ -171,93 +184,47 @@ class Tournament:
                 color_2=color2,
                 score_2=0
             )
-            print("create_matches - match created:", match)
             matches.append(match)
-            print("create_matches - matches list now:", matches)
 
             # Remove paired players
             players_to_pair.remove(p1)
             players_to_pair.remove(opponent)
-            print("create_matches - players_to_pair after removal:", players_to_pair)
 
-        # If odd number of players, one remains without opponent
-        if players_to_pair:
-            bye_player = players_to_pair[0]
-            print("create_matches - bye_player:", bye_player)
-
-            match = Match(
-                player_1=bye_player,
-                color_1="white",
-                score_1=1.0,  # Free point
-                player_2=None,
-                color_2=None,
-                score_2=0.0
-            )
-            matches.append(match)
-            print("create_matches - match with bye appended:", match)
-            print("create_matches - matches list now:", matches)
+        # No BYE handling: odd player will not be paired automatically
+        # Any remaining player must be handled manually outside this method
 
         tournament_round.matches_list.extend(matches)
-        print("create_matches - final tournament_round.matches_list:", tournament_round.matches_list)
 
+    def compute_tournament_players_score(self, tournament_rounds: list["TournamentRound"]
+                                        ) -> dict[str, float]:
+        """
+        Compute cumulative score for each player across all rounds.
+        """
+        if tournament_rounds is None:
+            tournament_rounds = self.rounds_list
+
+        scores = {}
+        for round_ in tournament_rounds:
+            for match in round_.matches_list:
+                # Initialize scores if player not yet in dictionary
+                if match.player_1.national_id not in scores:
+                    scores[match.player_1.national_id] = 0.0
+                scores[match.player_1.national_id] += match.score_1
+
+                if match.player_2:
+                    if match.player_2.national_id not in scores:
+                        scores[match.player_2.national_id] = 0.0
+                    scores[match.player_2.national_id] += match.score_2
+        return scores
 
     def close_tournament(self):
-        """close the tournament"""
-        if not self.start_date:
-            # tournament never started
-            return
-
+        """close the tournament """
         if self.end_date:
-            # tournament already closed
+            # Tournament already closed
             return
 
         self.end_date = datetime.now()
 
-    def compute_tournament_players_score(self) -> dict[str, float]:
-        """compute the player's tournament scores"""
-        scores: dict[str, float] = {}
-
-        for round in self.rounds_list:
-            for match in round.matches_list:
-                player1 = match.match[0][0]
-                score1 = match.match[0][1]
-                player2 = match.match[1][0]
-                score2 = match.match[1][1]
-
-                scores[player1.national_id] = scores.get(
-                    player1.national_id, 0.0
-                ) + score1
-                scores[player2.national_id] = scores.get(
-                    player2.national_id, 0.0
-                ) + score2
-
-        return scores
-
-    def get_tournament_winner(self) -> tuple[Optional["Player"], float]:
-        """determine winner of the tournament"""
-        scores = self.compute_tournament_players_score()
-
-        if not scores:
-            return None, 0.0
-
-        # the winner is the payer with the highest score
-        winner_nid = max(scores, key=lambda nid: scores[nid])
-        winner_score = scores[winner_nid]
-
-        # retrieve the winner player
-        winner_player = next(
-            (p for p in self.players_list if p.national_id == winner_nid), None
-        )
-
-        return winner_player, winner_score
-
-    def players_played_together(self, nid1: str, nid2: str) -> bool:
-        """True if players have already played each other in the tournament"""
-        for round in self.rounds_list:
-            for match in round.matches_list:
-                player1_nid = match.match[0][0].national_id
-                player2_nid = match.match[1][0].national_id
-                if {player1_nid, player2_nid} == {nid1, nid2}:
-                    return True
-        return False
+        print(f"close_tournament - Tournament {self.name} closed at "
+            f"{self.end_date}")
 

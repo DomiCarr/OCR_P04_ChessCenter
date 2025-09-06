@@ -1,6 +1,7 @@
 # controllers/tournaments_manager.py
+from typing import Optional, List
+import sys
 
-from models.base import compute_elo
 from models.tournaments import Tournaments
 from models.tournament import Tournament
 from models.players import Players
@@ -118,7 +119,7 @@ class TournamentsManager:
             return  # tournament not found
 
         # Start the round (round number managed internally by the tournament)
-        current_tournament.start_round(current_tournament.ongoing_round_number)
+        current_tournament.start_round()
         self.tournaments.update_tournament(current_tournament)
         self.view.display_message(
             f"Round {current_tournament.ongoing_round_number} of '{name}' started."
@@ -127,17 +128,20 @@ class TournamentsManager:
     def update_match_results(self):
         """Update the tournament with the match results"""
 
+        # Ask for tournament name
         name = self.view.ask_tournament_name()
         current_tournament = self.tournaments.get_tournament_by_name(name)
-
         if not current_tournament:
             self.view.display_message(f"Tournament '{name}' not found.")
             return  # tournament not found
 
         # Display ongoing round matches
-        ongoing_round = current_tournament.rounds_list[
-            current_tournament.ongoing_round_number - 1
-        ]
+        if not current_tournament.rounds_list:
+            self.view.display_message("No rounds have been started yet.")
+            return
+
+        ongoing_round = current_tournament.rounds_list[current_tournament.ongoing_round_number - 1]
+
         self.view.display_round_matches(ongoing_round)
 
         # Ask match results
@@ -145,91 +149,25 @@ class TournamentsManager:
         if not match_results:
             return
 
-        # compute and update players elo
-        self.update_players_elo(match_results)
+        match_results_obj = match_results
 
         # Save updated tournament and display the new results
-        ongoing_round.update_match_results([match_results])
+        ongoing_round.update_match_results(match_results_obj)
         self.tournaments.update_tournament(current_tournament)
         self.view.display_round_matches(ongoing_round)
 
         # Check if round is finished
         if not ongoing_round.round_has_remaining_ongoing_matches():
-            # If last round, close tournament
             if current_tournament.ongoing_round_number >= current_tournament.nb_of_rounds:
+                # Last round, close tournament
                 current_tournament.close_tournament()
                 self.tournaments.update_tournament(current_tournament)
-                self.view.display_tournament_winner(current_tournament)
+                self.view.display_players_ranking(current_tournament)
+                self.view.display_message(f"Tournament '{name}' closed.")
+                sys.exit(0)  # Exit the application
             else:
                 # Start next round
-                current_tournament.ongoing_round_number += 1
-                current_tournament.start_round(current_tournament.ongoing_round_number)
+                current_tournament.start_round()
                 self.tournaments.update_tournament(current_tournament)
                 self.view.display_round_start(current_tournament)
-
-    def update_players_elo(self, match_results: tuple):
-        """update ELO for both players match with debug prints"""
-        print("=== update_players_elo START ===")
-        print(f"match_results: {match_results}")
-
-        player1 = match_results[0][0]
-        player2 = match_results[1][0]
-        score1 = match_results[0][1]
-        score2 = match_results[1][1]
-
-        print(f"player1 object: {player1}")
-        print(f"player2 object: {player2}")
-        print(f"score1: {score1}")
-        print(f"score2: {score2}")
-        print(f"player1 current elo: {player1.elo}")
-        print(f"player2 current elo: {player2.elo}")
-
-        new_elo_p1, new_elo_p2 = compute_elo(
-            player1_current_elo=player1.elo,
-            player2_current_elo=player2.elo,
-            player1_score=score1,
-            player2_score=score2
-        )
-
-        print(f"new_elo_p1: {new_elo_p1}")
-        print(f"new_elo_p2: {new_elo_p2}")
-
-        # Update ELO
-        player1.elo = new_elo_p1
-        player2.elo = new_elo_p2
-
-        print(f"player1 updated elo: {player1.elo}")
-        print(f"player2 updated elo: {player2.elo}")
-
-        # Save players
-        self.players.update_player(player1)
-        self.players.update_player(player2)
-
-        print("=== update_players_elo END ===")
-
-    def find_valid_opponent(self,
-                            player: "Player",
-                            opponents: list["Player"],
-                            current_tournament: Tournament) -> "Player" | None:
-        """
-        Find the first valid opponent for the given player among candidates.
-        Return None if no valid opponent is found.
-        """
-        print("find_valid_opponent - start")
-        print("find_valid_opponent - player:", player)
-        print("find_valid_opponent - opponents:", opponents)
-        print("find_valid_opponent - current_tournament:", current_tournament.name)
-
-        for idx, opponent in enumerate(opponents, start=1):
-            print(f"find_valid_opponent - checking opponent {idx}:", opponent)
-            played_before = current_tournament.players_played_together(
-                player.national_id, opponent.national_id)
-            print(f"find_valid_opponent - player {player.national_id} vs opponent {opponent.national_id} - played_before:", played_before)
-
-            if not played_before:
-                print(f"find_valid_opponent - valid opponent found:", opponent)
-                return opponent
-
-        print("find_valid_opponent - no valid opponent found")
-        return None
 

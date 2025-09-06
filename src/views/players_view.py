@@ -21,16 +21,13 @@ class PlayersView(BaseView):
             except ValueError:
                 print("Invalid date format. Please use DD/MM/YYYY.")
 
-        elo = input("Elo: ").strip()
-
         # convert to date
         birth_date = datetime.strptime(birth_date_str, "%d/%m/%Y").date()
         return {
             "national_id": national_id,
             "first_name": first_name,
             "last_name": last_name,
-            "birth_date": birth_date,
-            "elo": elo
+            "birth_date": birth_date
         }
 
     def display_players(self, players: list[Player]):
@@ -38,5 +35,5 @@ class PlayersView(BaseView):
         for p in players:
             print(
                 f"{p.national_id} - {p.first_name} {p.last_name} "
-                f"(born {p.birth_date}) (ELO: {p.elo})"
+                f"(born {p.birth_date}) "
                 )

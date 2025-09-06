@@ -41,7 +41,7 @@ class MainMenu:
         elif choice == "7":
             self.tournaments_manager.display_tournament_players()
         elif choice == "8":
-            self.tournaments_manager.start_round()
+            self.tournaments_manager.start_tournament()
         elif choice == "9":
             self.tournaments_manager.update_match_results()
         elif choice == "91":

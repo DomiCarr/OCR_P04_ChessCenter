@@ -57,13 +57,18 @@ class TournamentsView(BaseView):
         """print all matches for a round"""
         print(f" --------- {comment} ----------- ")
         for match in current_round.matches_list:
-            p1, col1, score1 = match.match[0]
-            p2, col2, score2 = match.match[1]
+            p1 = match.player_1
+            col1 = match.color_1
+            score1 = match.score_1
+
+            p2 = match.player_2
+            col2 = match.color_2
+            score2 = match.score_2
+
             print(f"{p1.national_id} {p1.first_name} {p1.last_name} "
                   f"({col1}) score: {score1} --- "
                   f"{p2.national_id} {p2.first_name} {p2.last_name} "
-                  f"({col2}) score: {score2} "
-                  )
+                  f"({col2}) score: {score2}")
 
     def display_tournament_rounds(self, tournament: Tournament):
         """Display all rounds of a tournament with their matches"""
@@ -146,7 +151,7 @@ class TournamentsView(BaseView):
             print("No players registered for this tournament.")
             return
 
-        scores = tournament.compute_tournament_players_score()
+        scores = tournament.compute_tournament_players_score(tournament.rounds_list)
 
         sorted_players = sorted(
             tournament.players_list,
@@ -161,6 +166,6 @@ class TournamentsView(BaseView):
             print(
                 f"({idx}. NID: {player.national_id}) "
                 f"{player.first_name} {player.last_name}"
-                f"(ELO: {player.elo}) - Score: {score}"
+                f" - Score: {score}"
                 )
 

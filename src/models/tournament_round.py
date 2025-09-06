@@ -53,24 +53,22 @@ class TournamentRound:
             matches_list=round_matches_list
         )
 
-    def update_match_results(
-            self, match_results: list[tuple[str, float, str, float]]):
-        """update one match results"""
-        for nid1, score1, nid2, score2 in match_results:
-            for match in self.matches_list:
-                nids = [
-                    match.match[0][0].national_id,
-                    match.match[1][0].national_id
-                ]
-                if (nid1 in nids) and (nid2 in nids):
-                    match.update_match_scores(score1, score2)
-                    break
+    def update_match_results(self, match_result: tuple[str, float, str, float]):
+        """Update scores for a single match identified by players' national IDs."""
+        nid1, score1, nid2, score2 = match_result
+        for match in self.matches_list:
+            nids = [match.player_1.national_id]
+            if match.player_2:
+                nids.append(match.player_2.national_id)
+
+            if (nid1 in nids) and (nid2 in nids):
+                match.score_1 = score1
+                match.score_2 = score2
+                break
 
     def round_has_remaining_ongoing_matches(self) -> bool:
-        """Return true if at least one match has score 1 & score2 = 0"""
+        """Return true if at least one match has score 0-0"""
         for match in self.matches_list:
-            score1 = match.match[0][2]
-            score2 = match.match[1][2]
-            if score1 + score2 == 0:
+            if match.score_1 + match.score_2 == 0:
                 return True
         return False
