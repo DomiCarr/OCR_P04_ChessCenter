@@ -1,27 +1,19 @@
+from views.main_menu_view import MainMenuView
+
+
 class MainMenu:
     def __init__(self,
                  players_manager,
                  tournaments_manager):
         self.players_manager = players_manager
         self.tournaments_manager = tournaments_manager
+        self.view = MainMenuView()
 
     def show_menu(self):
         """Display the main menu and handle user input."""
         while True:
-            print("\n=== Main Menu ===")
-            print("1. List the players")
-            print("2. Add a player")
-            print("3. List the tournaments")
-            print("4. Add a tournament")
-            print("5. Display a tournament details")
-            print("6. Register players to a tournament")
-            print("7. List tournament registerd players")
-            print("8. Start tournament")
-            print("9. Enter match results")
-            print("91. List tournament ranked players")
-            print("0. Exit")
-
-            choice = input("Select an option: ").strip()
+            self.view.display_menu()
+            choice = self.view.ask_menu_option()
             self.handle_choice(choice)
 
     def handle_choice(self, choice: str):
@@ -47,7 +39,7 @@ class MainMenu:
         elif choice == "91":
             self.tournaments_manager.display_tournament_ranked_players()
         elif choice == "0":
-            print("Exiting...")
+            self.view.display_message("Exiting...")
             exit(0)
         else:
-            print("Invalid choice. Try again.")
+            self.view.display_message("Invalid choice. Try again.")

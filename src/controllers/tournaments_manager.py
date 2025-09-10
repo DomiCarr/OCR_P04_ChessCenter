@@ -1,21 +1,21 @@
 # controllers/tournaments_manager.py
-from typing import Optional, List
 import sys
 
 from models.tournaments import Tournaments
 from models.tournament import Tournament
 from models.players import Players
-from models.player import Player
 from views.tournaments_view import TournamentsView
 
 
 class TournamentsManager:
     def __init__(self):
+        """Initialize the tournaments manager with models and view"""
         self.tournaments = Tournaments()
         self.players = Players()
         self.view = TournamentsView()
 
     def display_tournament(self):
+        """Display the details of a tournament"""
         name = self.view.ask_tournament_name()
         current_tournament = self.tournaments.get_tournament_by_name(name)
 
@@ -26,6 +26,7 @@ class TournamentsManager:
         self.view.display_tournament_details(current_tournament)
 
     def display_tournament_players(self):
+        """Display all the players registered in a tournament"""
         name = self.view.ask_tournament_name()
         current_tournament = self.tournaments.get_tournament_by_name(name)
 
@@ -36,6 +37,7 @@ class TournamentsManager:
         self.view.display_tournament_players(current_tournament)
 
     def display_tournament_ranked_players(self):
+        """Display all tournament players sorted by ranking"""
         name = self.view.ask_tournament_name()
         current_tournament = self.tournaments.get_tournament_by_name(name)
 
@@ -46,6 +48,7 @@ class TournamentsManager:
         self.view.display_players_ranking(current_tournament)
 
     def add_tournament(self):
+        "Add a new tournament"
         tournament_details = self.view.ask_new_tournament_details()
         name = tournament_details["name"]
 
@@ -75,10 +78,12 @@ class TournamentsManager:
         for nid in nids:
             player_to_register = self.players.get_player_by_nid(nid)
             if not player_to_register:
-                self.view.display_message(f"Player with ID '{nid}' not found. Skipping.")
+                self.view.display_message(f"Player with ID '{nid}' "
+                                          f" not found. Skipping.")
                 continue
             if player_to_register in current_tournament.players_list:
-                self.view.display_message(f"Player '{nid}' already registered. Skipping.")
+                self.view.display_message(f"Player '{nid}' "
+                                          f"already registered. Skipping.")
                 continue
             current_tournament.players_list.append(player_to_register)
 
@@ -93,6 +98,7 @@ class TournamentsManager:
         self.view.display_tournaments(tournaments_list)
 
     def start_tournament(self):
+        """Start a tournament"""
         name = self.view.ask_tournament_name()
         current_tournament = self.tournaments.get_tournament_by_name(name)
 
@@ -101,7 +107,8 @@ class TournamentsManager:
             return  # tournament not found
 
         if current_tournament.start_date:
-            self.view.display_message(f"Tournament '{name}' has already started.")
+            self.view.display_message(f"Tournament '{name}' "
+                                      f"has already started.")
             return  # Tournament already started
 
         # update the current tournament
@@ -122,7 +129,8 @@ class TournamentsManager:
         current_tournament.start_round()
         self.tournaments.update_tournament(current_tournament)
         self.view.display_message(
-            f"Round {current_tournament.ongoing_round_number} of '{name}' started."
+            f"Round {current_tournament.ongoing_round_number} "
+            f"of '{name}' started."
         )
 
     def update_match_results(self):
@@ -140,7 +148,8 @@ class TournamentsManager:
             self.view.display_message("No rounds have been started yet.")
             return
 
-        ongoing_round = current_tournament.rounds_list[current_tournament.ongoing_round_number - 1]
+        ongoing_round = current_tournament.rounds_list[
+            current_tournament.ongoing_round_number - 1]
 
         self.view.display_round_matches(ongoing_round)
 
@@ -158,7 +167,8 @@ class TournamentsManager:
 
         # Check if round is finished
         if not ongoing_round.round_has_remaining_ongoing_matches():
-            if current_tournament.ongoing_round_number >= current_tournament.nb_of_rounds:
+            if current_tournament.ongoing_round_number >= \
+               current_tournament.nb_of_rounds:
                 # Last round, close tournament
                 current_tournament.close_tournament()
                 self.tournaments.update_tournament(current_tournament)
