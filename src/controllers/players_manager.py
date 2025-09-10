@@ -13,20 +13,14 @@ class PlayersManager:
 
     def add_player(self):
         """Add a new player in the JSON file"""
-        data = self.players_view.ask_new_player()
+        new_player = self.players_view.ask_new_player()
 
         # check if player already exists
-        if self.players_model.player_exists(data["national_id"]):
+        if self.players_model.player_exists(new_player.national_id):
             self.players_view.display_message("Player alrady exists")
             return
 
         # Create and save new player
-        new_player = Player(
-            national_id=data["national_id"],
-            first_name=data["first_name"],
-            last_name=data["last_name"],
-            birth_date=data["birth_date"]
-        )
         self.players_model.load_players()
         self.players_model.add_player(new_player)
         self.players_view.display_message("Player added successfully.")

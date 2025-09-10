@@ -8,16 +8,16 @@ from typing import List
 
 
 class TournamentsView(BaseView):
-    def ask_new_tournament_details(self) -> dict:
+    def ask_new_tournament_details(self) -> Tournament:
         """Prompt the user for details to create a tournament."""
         name = input("Tournament name: ").strip()
         location = input("Location: ").strip()
         description = input("Description: ").strip()
-        return {
-            "name": name,
-            "location": location,
-            "description": description
-        }
+        return Tournament(
+            name=name,
+            location=location,
+            description=description
+        )
 
     def ask_tournament_name(self) -> str:
         """Ask the user for a tournament name"""

@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class PlayersView(BaseView):
-    def ask_new_player(self) -> dict:
+    def ask_new_player(self) -> Player:
         """Ask user to enter new player data."""
         print("\n=== Add New Player ===")
         national_id = input("National ID: ").strip()
@@ -23,13 +23,12 @@ class PlayersView(BaseView):
                 print("Invalid date format. Please use DD/MM/YYYY.")
 
         # convert to date
-        birth_date = datetime.strptime(birth_date_str, "%d/%m/%Y").date()
-        return {
-            "national_id": national_id,
-            "first_name": first_name,
-            "last_name": last_name,
-            "birth_date": birth_date
-        }
+        return Player(
+            national_id=national_id,
+            first_name=first_name,
+            last_name=last_name,
+            birth_date=birth_date
+        )
 
     def display_players(self, players: list[Player]):
         print("\n=== Players List ===")

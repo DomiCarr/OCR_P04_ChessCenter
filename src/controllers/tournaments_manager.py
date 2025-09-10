@@ -49,20 +49,16 @@ class TournamentsManager:
 
     def add_tournament(self):
         "Add a new tournament"
-        tournament_details = self.view.ask_new_tournament_details()
-        name = tournament_details["name"]
+        new_tournament = self.view.ask_new_tournament_details()
 
-        if self.tournaments.tournament_exists(name):
-            self.view.display_message(f"Tournament '{name}' already exists.")
+        if self.tournaments.tournament_exists(new_tournament.name):
+            self.view.display_message(f"Tournament "
+                                      f"'{new_tournament.name}' already exists.")
             return
 
-        new_tournament = Tournament(
-            name=name,
-            location=tournament_details["location"],
-            description=tournament_details["description"]
-            )
         self.tournaments.add_tournament(new_tournament)
-        self.view.display_message(f"Tournament '{name}' added successfully.")
+        self.view.display_message(f"Tournament "
+                                  f"'{new_tournament.name}' added successfully.")
 
     def register_tournament_players(self):
         """Register tournament players"""
