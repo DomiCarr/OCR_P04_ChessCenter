@@ -1,3 +1,5 @@
+""" models/tournament_round.py """
+
 from datetime import datetime
 from models.match import Match
 from typing import List
@@ -16,6 +18,7 @@ class TournamentRound:
         self.matches_list = matches_list or []
 
     def to_dict(self):
+        """Convert object to dictionary for JSON saving."""
         matches_list_dict = []
         if self.matches_list:
             for match in self.matches_list:
@@ -32,7 +35,7 @@ class TournamentRound:
 
     @classmethod
     def from_dict(cls, data: dict):
-        """rebuild TournamentRound object from a JSON dictionary"""
+        """rebuild object from a JSON dictionary"""
         round_name = data.get("name", "")
 
         # Convert JSON ISO 8601 strings into datetime objects

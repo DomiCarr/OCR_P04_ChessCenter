@@ -1,4 +1,4 @@
-""" Players """
+""" models/players.py """
 
 import json
 from config import PLAYERS_FILE_PATH

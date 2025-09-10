@@ -1,15 +1,11 @@
-""" Tournaments """
+""" models/tournaments.py """
 
 # Standard library
 import json
-from datetime import datetime
 
 # Project modules
 from config import TOURNAMENTS_FILE_PATH
 from models.tournament import Tournament
-from models.tournament_round import TournamentRound
-from models.player import Player
-from models.match import Match
 
 
 class Tournaments:

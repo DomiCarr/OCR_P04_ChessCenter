@@ -1,3 +1,6 @@
+""" models/match.py """
+
+
 from models.player import Player
 
 
@@ -13,6 +16,7 @@ class Match:
         self.score_2 = score_2
 
     def to_dict(self):
+        """Convert object to dictionary for JSON saving."""
         return {
             "player_1": self.player_1.to_dict(),
             "color_1": self.color_1,
@@ -24,6 +28,7 @@ class Match:
 
     @classmethod
     def from_dict(cls, data: dict):
+        """Rebuild object from a JSON dictionary."""
         return cls(
             Player.from_dict(data["player_1"]),
             data["color_1"],
@@ -34,5 +39,6 @@ class Match:
         )
 
     def update_match_scores(self, score1: float, score2: float):
+        """Update the scores of a match"""
         self.score_1 = score1
         self.score_2 = score2

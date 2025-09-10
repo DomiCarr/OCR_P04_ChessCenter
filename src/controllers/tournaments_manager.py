@@ -1,4 +1,4 @@
-# controllers/tournaments_manager.py
+""" controllers/tournaments_manager.py """
 import sys
 
 from models.tournaments import Tournaments
@@ -180,4 +180,3 @@ class TournamentsManager:
                 current_tournament.start_round()
                 self.tournaments.update_tournament(current_tournament)
                 self.view.display_round_start(current_tournament)
-

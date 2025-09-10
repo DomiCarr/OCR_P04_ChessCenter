@@ -1,6 +1,7 @@
+""" models/tournament.py """
+
 import random
 from typing import List
-from typing import Optional
 from datetime import datetime
 
 from models.tournament_round import TournamentRound
@@ -32,7 +33,7 @@ class Tournament:
         self.description = description
 
     def to_dict(self):
-        """converts Tournament in a dict to save it as JSON"""
+        """converts Tournobject ament in a dict to save it as JSON"""
         rounds_list_dict = []  # converts rounds_list in a dict
         if self.rounds_list:
             for r in self.rounds_list:
@@ -57,7 +58,7 @@ class Tournament:
 
     @classmethod
     def from_dict(cls, data: dict):
-        """Rebuild tournament from JSON dictionnary"""
+        """Rebuild object from JSON dictionnary"""
         start_date_json = data.get("start_date")
         start_date = (
             datetime.fromisoformat(start_date_json)
@@ -139,8 +140,6 @@ class Tournament:
         print(f"start_round - Round {round_name} created with "
               f"{len(tournament_round.matches_list)} matches")
 
-
-
     def sort_players(self, round_number: int) -> List["Player"]:
         """Sort the players :shuffle for round 1, sort by score for others"""
         if not self.players_list:
@@ -159,7 +158,7 @@ class Tournament:
         return self.players_list
 
     def create_matches(self, tournament_round: "TournamentRound",
-                    players_sorted: list["Player"]) -> None:
+                       players_sorted: list["Player"]) -> None:
         """
         Create matches for the given round.
         - Players are paired consecutively by score.
@@ -195,8 +194,9 @@ class Tournament:
 
         tournament_round.matches_list.extend(matches)
 
-    def compute_tournament_players_score(self, tournament_rounds: list["TournamentRound"]
-                                        ) -> dict[str, float]:
+    def compute_tournament_players_score(
+            self, tournament_rounds: list["TournamentRound"]
+            ) -> dict[str, float]:
         """
         Compute cumulative score for each player across all rounds.
         """
@@ -226,5 +226,4 @@ class Tournament:
         self.end_date = datetime.now()
 
         print(f"close_tournament - Tournament {self.name} closed at "
-            f"{self.end_date}")
-
+              f"{self.end_date}")

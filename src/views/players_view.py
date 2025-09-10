@@ -1,4 +1,5 @@
 """views/players_view.py"""
+
 from views.base_view import BaseView
 from models.player import Player
 from datetime import datetime

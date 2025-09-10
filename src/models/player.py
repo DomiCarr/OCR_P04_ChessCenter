@@ -1,4 +1,4 @@
-"""models/player.py"""
+""" models/player.py """
 
 from datetime import datetime, date
 
@@ -14,7 +14,7 @@ class Player:
         self.birth_date = birth_date
 
     def to_dict(self) -> dict:
-        """Convert player object to dictionary for JSON saving."""
+        """Convert object to dictionary for JSON saving."""
         return {
             "national_id": self.national_id,
             "first_name": self.first_name,
@@ -25,7 +25,7 @@ class Player:
 
     @classmethod
     def from_dict(cls, data: dict):
-        """Rebuild a Player object from a JSON dictionary."""
+        """Rebuild object from a JSON dictionary."""
 
         birth_date_json = data.get("birth_date")
         birth_date_obj = (

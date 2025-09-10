@@ -1,4 +1,5 @@
-# views/tournaments_view.py
+"""views/tournaments_view.py"""
+
 from views.base_view import BaseView
 from models.tournament import Tournament
 from models.tournament_round import TournamentRound
@@ -124,7 +125,9 @@ class TournamentsView(BaseView):
         return nid_1, score_1, nid_2, score_2
 
     def display_round_start(self, tournament: "Tournament"):
-        current_round = tournament.rounds_list[tournament.ongoing_round_number - 1]
+        """Display that the tournament has started"""
+        current_round = tournament.rounds_list[
+            tournament.ongoing_round_number - 1]
         print(f"'{current_round.name}' started  ===")
 
     def display_tournament_winner(self, tournament: Tournament):
@@ -151,7 +154,8 @@ class TournamentsView(BaseView):
             print("No players registered for this tournament.")
             return
 
-        scores = tournament.compute_tournament_players_score(tournament.rounds_list)
+        scores = tournament.compute_tournament_players_score(
+            tournament.rounds_list)
 
         sorted_players = sorted(
             tournament.players_list,
@@ -168,4 +172,3 @@ class TournamentsView(BaseView):
                 f"{player.first_name} {player.last_name}"
                 f" - Score: {score}"
                 )
-

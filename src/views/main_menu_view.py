@@ -1,4 +1,4 @@
-# views/main_menu_view.py
+"""views/main_menu_view.py"""
 
 from views.base_view import BaseView
 

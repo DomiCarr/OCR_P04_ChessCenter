@@ -1,7 +1,9 @@
+""" controllers/main_menu.py """
 from views.main_menu_view import MainMenuView
 
 
 class MainMenu:
+    """Main menu of the program"""
     def __init__(self,
                  players_manager,
                  tournaments_manager):

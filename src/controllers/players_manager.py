@@ -1,4 +1,4 @@
-"""manage_players - Controller for player CLI"""
+""" controllers/players_manager.py """
 
 from models.player import Player
 from models.players import Players
@@ -7,6 +7,7 @@ from views.players_view import PlayersView
 
 class PlayersManager:
     def __init__(self):
+        """Initialize the players manager with model & view"""
         self.players_model = Players()
         self.players_view = PlayersView()
 

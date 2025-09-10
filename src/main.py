@@ -1,15 +1,20 @@
 """main.py - Application entry point."""
 
-from controllers.init_app import init_app
+import os
+from config import DATA_DIRECTORY_PATH
+
 from controllers.main_menu import MainMenu
 from controllers.players_manager import PlayersManager
 from controllers.tournaments_manager import TournamentsManager
 
-if __name__ == "__main__":
-    # Initialize directories and files
-    init_app()
 
-    # instanciate models
+class Main:
+    """Initialize app directories, controllers et main menu"""
+
+    # create the data directory if not exist
+    os.makedirs(DATA_DIRECTORY_PATH, exist_ok=True)
+
+    # instanciate controllers
     players_manager = PlayersManager()
     tournaments_manager = TournamentsManager()
 
@@ -18,13 +23,6 @@ if __name__ == "__main__":
     main_menu.show_menu()     # Launch CLI
 
 
-
-    """
-    main: separer l'instaciation des modeles
-    main_menu :
-
-
-
-
-    """
-
+if __name__ == "__main__":
+    # Start the program
+    Main()
