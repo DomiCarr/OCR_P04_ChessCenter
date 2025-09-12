@@ -1,53 +1,108 @@
-# ChessCenter
-ChessCenter is an application that manage chess tournaments
+# ♟️ ChessCenter
 
-## Application Architecture
+**ChessCenter** is a Python application designed to manage chess tournaments, including player registration, tournament creation, match results, and rankings.
 
-The screenshot shows the overall structure of the application
-The players and tournaments are stored in JSON files in the data directory
+---
 
-![Project Architecture](assets/wikibooks_architecture.png)
+## 🧠 Application Architecture
 
+ChessCenter is organized using a clean modular architecture based on the Model–View–Controller (MVC) pattern.
+Each component has its own dedicated folder, making the codebase easy to navigate and maintain.
 
+- **Models** handle the core data structures (players, tournaments, matches, etc.)
+- **Views** manage user interaction via the console
+- **Controllers** coordinate logic between models and views
+- **Data** stores persistent tournament and player information in JSON format
 
-# Application Installation
+Here’s the overall project layout:
 
-This application need to be installed from the OCR_P04_ChessCenter repository that has been created in the company app by the git clone command
-(git clone https://github.com/DomiCarr/OCR_P04_ChessCenter)
+```
+ChessCenter/
+├── README.md
+├── requirements.txt
+├── data/                 # JSON files for players and tournaments
+├── docs/                 # Documentation and project notes
+├── flake8_rapport/       # Code linting reports
+├── src/                  # Main application source code
+│   ├── main.py           # Entry point of the application
+│   ├── config.py         # Configuration settings
+│   ├── env/              # Virtual environment (excluded from version control)
+│   ├── controllers/      # Business logic and flow control
+│   ├── models/           # Data models and domain classes
+│   ├── views/            # Console-based user interfaces
+```
 
-*** enter the application repository:**
-OCR_P04_ChessCenter
+---
 
-### Create and activate the virtual environment
+## 🚀 Installation Guide
+
+Clone the repository from GitHub:
+
+```bash
+git clone https://github.com/DomiCarr/OCR_P04_ChessCenter
+cd OCR_P04_ChessCenter
+```
+
+### 🛠️ Set up the virtual environment
+
+```bash
 python -m venv env
-source env/bin/activate
+source env/bin/activate  # On Windows: env\Scripts\activate
+```
 
-### Install the packages from requirements.txt
+### 📦 Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-### Check that the packages has been installed
+### ✅ Verify installation
+
+Run the following to confirm packages are installed:
+
+```bash
 pip freeze
+```
 
-The result must have the 2 following lines bellow:
+Expected output includes:
 
-### Run the application
+```text
+flake8==7.3.0
+mccabe==0.7.0
+pycodestyle==2.14.0
+pyflakes==3.4.0
+```
+
+---
+
+## ▶️ Launch the Application
+
+```bash
 cd src
 python ChessCenter.py
+```
 
-## Fabriqué avec
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+---
 
+## 🧰 Built With
 
-## Releases
-**First release :** 1.0
+[![Made with Python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
-## Authors
-* **Dominique Carrasco** _alias_ [@DomiCarr](https://github.com/DomiCarr)
+---
 
-## License
+## 📦 Releases
 
-This project has an [OpenClassrooms](https://openclassrooms.com/fr/policies/terms-conditions) license
+- **Version 1.0** — Initial release
 
+---
 
+## 👤 Author
 
+**Dominique Carrasco**
+GitHub: [@DomiCarr](https://github.com/DomiCarr)
 
+---
+
+## 📄 License
+
+This project is licensed under the [OpenClassrooms Terms & Conditions](https://openclassrooms.com/fr/policies/terms-conditions)
