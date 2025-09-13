@@ -1,6 +1,5 @@
 """ controllers/players_manager.py """
 
-from models.player import Player
 from models.players import Players
 from views.players_view import PlayersView
 

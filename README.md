@@ -99,9 +99,11 @@ Activate:
 > If you get an error like
 > **“running scripts is disabled on this system”**,
 > open PowerShell as administrator and run:
+>
 > ```powershell
 > Set-ExecutionPolicy RemoteSigned
 > ```
+>
 > Then confirm with `Y` to allow local scripts to run.
 
 
@@ -123,9 +125,13 @@ Expected output includes:
 
 ```text
 flake8==7.3.0
+flake8-html==0.4.3
+Jinja2==3.1.6
+MarkupSafe==3.0.2
 mccabe==0.7.0
 pycodestyle==2.14.0
 pyflakes==3.4.0
+Pygments==2.19.2
 ```
 
 ---

@@ -2,7 +2,6 @@
 import sys
 
 from models.tournaments import Tournaments
-from models.tournament import Tournament
 from models.players import Players
 from views.tournaments_view import TournamentsView
 
