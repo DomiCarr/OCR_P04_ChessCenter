@@ -4,6 +4,31 @@
 
 ---
 
+## 📚 Table of Contents
+
+- [Features](#-features)
+- [Application Architecture](#-application-architecture)
+- [Installation Guide](#-installation-guide)
+- [Launch the Application](#-launch-the-application)
+- [Code Quality Report (Flake8)](#-code-quality-report-flake8)
+- [Built With](#-built-with)
+- [Releases](#-releases)
+- [Author](#-author)
+- [License](#-license)
+
+---
+
+## 🧩 Features
+
+- Add and list chess players
+- Create and manage tournaments
+- Register players to tournaments
+- Start tournaments and enter match results
+- Display tournament rankings
+- Persist data in JSON format
+
+---
+
 ## 🧠 Application Architecture
 
 ChessCenter is organized using a clean modular architecture based on the Model–View–Controller (MVC) pattern.
@@ -45,10 +70,40 @@ cd OCR_P04_ChessCenter
 
 ### 🛠️ Set up the virtual environment
 
+Create and activate the virtual environment before installing packages or running the application.
+
+Create:
+
 ```bash
 python -m venv env
-source env/bin/activate  # On Windows: env\Scripts\activate
 ```
+
+Activate:
+
+- **On macOS/Linux**
+  ```bash
+  source env/bin/activate
+  ```
+
+- **On Windows (CMD)**
+  ```cmd
+  env\Scripts\activate
+  ```
+
+- **On Windows (PowerShell)**
+  ```powershell
+  .\env\Scripts\Activate.ps1
+  ```
+
+> 📝 **Note (PowerShell)**
+> If you get an error like
+> **“running scripts is disabled on this system”**,
+> open PowerShell as administrator and run:
+> ```powershell
+> Set-ExecutionPolicy RemoteSigned
+> ```
+> Then confirm with `Y` to allow local scripts to run.
+
 
 ### 📦 Install dependencies
 
@@ -79,8 +134,27 @@ pyflakes==3.4.0
 
 ```bash
 cd src
-python ChessCenter.py
+python main.py
 ```
+
+---
+
+## 🧪 Code Quality Report (Flake8)
+![Flake8](https://img.shields.io/badge/code%20style-Flake8-blue)
+
+
+To ensure code quality and compliance with PEP8 standards, this project uses **Flake8** with HTML reporting.
+
+You can generate a detailed linting report by running the following command from the root of the project:
+
+```bash
+python -m flake8 src/ --format=html --htmldir=flake8_rapport
+```
+
+This will create an HTML report in the `flake8_rapport/` directory.
+You can open `flake8_rapport/index.html` in your browser to review warnings, errors, and style issues.
+
+> ✅ Tip: Make sure your virtual environment is activated before running the command.
 
 ---
 
