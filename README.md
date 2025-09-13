@@ -61,6 +61,9 @@ ChessCenter/
 
 ## 🚀 Installation Guide
 
+> ⚠️ **Compatibility Note**
+> This project requires **Python ≥ 3.10** and **pip ≥ 23.0** to ensure full compatibility with Flake8 and its HTML reporting plugin.
+
 Clone the repository from GitHub:
 
 ```bash
