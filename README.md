@@ -63,6 +63,7 @@ ChessCenter/
 
 > ⚠️ **Compatibility Note**
 > This project requires **Python ≥ 3.10** and **pip ≥ 23.0** to ensure full compatibility with Flake8 and its HTML reporting plugin.
+
 > 🐧 **Note macOS/Linux**
 > On Linux/Mac, the `python` command may not be available by default.
 > Use `python3` instead:
